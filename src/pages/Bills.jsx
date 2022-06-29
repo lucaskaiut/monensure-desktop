@@ -28,7 +28,7 @@ export function Bills () {
             },
             supplier: {
                 id: '1231231232',
-                name: "Adonias Barbosa de Souza",
+                name: "Lucas Kaiut de Souza",
                 created_at: '2022-01-01 22:49:38',
                 updated_at: '2022-01-01 22:49:38',
             },
@@ -76,7 +76,7 @@ export function Bills () {
             },
             supplier: {
                 id: '1231231232',
-                name: "Adonias Barbosa de Souza",
+                name: "Lucas Kaiut de Souza",
                 created_at: '2022-01-01 22:49:38',
                 updated_at: '2022-01-01 22:49:38',
             },
@@ -124,7 +124,7 @@ export function Bills () {
             },
             supplier: {
                 id: '1231231232',
-                name: "Adonias Barbosa de Souza",
+                name: "Lucas Kaiut de Souza",
                 created_at: '2022-01-01 22:49:38',
                 updated_at: '2022-01-01 22:49:38',
             },
@@ -172,7 +172,7 @@ export function Bills () {
             },
             supplier: {
                 id: '1231231232',
-                name: "Adonias Barbosa de Souza",
+                name: "Lucas Kaiut de Souza",
                 created_at: '2022-01-01 22:49:38',
                 updated_at: '2022-01-01 22:49:38',
             },
@@ -220,7 +220,7 @@ export function Bills () {
             },
             supplier: {
                 id: '1231231232',
-                name: "Adonias Barbosa de Souza",
+                name: "Lucas Kaiut de Souza",
                 created_at: '2022-01-01 22:49:38',
                 updated_at: '2022-01-01 22:49:38',
             },
@@ -267,7 +267,7 @@ export function Bills () {
             },
             supplier: {
                 id: '1231231232',
-                name: "Adonias Barbosa de Souza",
+                name: "Lucas Kaiut de Souza",
                 created_at: '2022-01-01 22:49:38',
                 updated_at: '2022-01-01 22:49:38',
             },
@@ -315,7 +315,7 @@ export function Bills () {
             },
             supplier: {
                 id: '1231231232',
-                name: "Adonias Barbosa de Souza",
+                name: "Lucas Kaiut de Souza",
                 created_at: '2022-01-01 22:49:38',
                 updated_at: '2022-01-01 22:49:38',
             },
@@ -363,7 +363,7 @@ export function Bills () {
             },
             supplier: {
                 id: '1231231232',
-                name: "Adonias Barbosa de Souza",
+                name: "Lucas Kaiut de Souza",
                 created_at: '2022-01-01 22:49:38',
                 updated_at: '2022-01-01 22:49:38',
             },
@@ -411,7 +411,7 @@ export function Bills () {
             },
             supplier: {
                 id: '1231231232',
-                name: "Adonias Barbosa de Souza",
+                name: "Lucas Kaiut de Souza",
                 created_at: '2022-01-01 22:49:38',
                 updated_at: '2022-01-01 22:49:38',
             },
@@ -459,7 +459,7 @@ export function Bills () {
             },
             supplier: {
                 id: '1231231232',
-                name: "Adonias Barbosa de Souza",
+                name: "Lucas Kaiut de Souza",
                 created_at: '2022-01-01 22:49:38',
                 updated_at: '2022-01-01 22:49:38',
             },
@@ -507,7 +507,7 @@ export function Bills () {
             },
             supplier: {
                 id: '1231231232',
-                name: "Adonias Barbosa de Souza",
+                name: "Lucas Kaiut de Souza",
                 created_at: '2022-01-01 22:49:38',
                 updated_at: '2022-01-01 22:49:38',
             },
@@ -555,7 +555,7 @@ export function Bills () {
             },
             supplier: {
                 id: '1231231232',
-                name: "Adonias Barbosa de Souza",
+                name: "Lucas Kaiut de Souza",
                 created_at: '2022-01-01 22:49:38',
                 updated_at: '2022-01-01 22:49:38',
             },
