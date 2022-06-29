@@ -5,6 +5,7 @@ import { TableRow } from '../components/TableRow';
 import { BillForm } from "../components/BillForm";
 import { validateData } from "../formValidation";
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { X } from "phosphor-react";
 
 export function Bills () {
     const [bills, setBills] = useState([]);
@@ -676,9 +677,10 @@ export function Bills () {
                 <Modal
                     open={isModalOpen}
                     onClose={toggleModal}
-                    className="flex justify-center items-center"
+                    className="flex justify-center items-center max-w-full"
                 >
-                    <div className="bg-white text-zinc-600 min-w-[36rem] min-h-[46.25rem] rounded-lg py-16 px-12">
+                    <div className="relative bg-white text-zinc-600 max-w-full sm:min-w-[36rem] min-h-[46.25rem] rounded-lg py-16 px-4 sm:px-12">
+                        <X className="top-3 right-3 absolute" onClick={toggleModal} />
                         <h1 className="text-2xl">Cadastrar nova transação</h1>
                         <BillForm onSubmit={handleCreateBill} errors={formErrors}/>
                     </div>

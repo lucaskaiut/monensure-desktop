@@ -142,7 +142,7 @@ export function DatePicker ({ placeholder, setDate, value }) {
         </div>
         {showDatepicker && (
             <div
-                className="bg-white mt-12 rounded-lg p-4 absolute top-0 left-0 w-[17rem]"
+                className="bg-white mt-12 rounded-lg p-4 absolute top-0 left-0 w-[17rem] z-50"
             >
             <div className="flex justify-between items-center mb-2">
                 <div>

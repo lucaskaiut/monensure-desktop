@@ -106,7 +106,7 @@ export function BillForm ({ onSubmit, errors }) {
     }
 
     return (
-        <form className="w-full mt-8 flex flex-col items-center gap-2" onSubmit={handleSubmit}>
+        <form className="w-full max-w-full mt-8 flex flex-col items-center gap-2" onSubmit={handleSubmit}>
             <input
                 className={classNames('bg-[#e7e9ee] rounded-md py-5 pl-6 w-full border', {
                     'border-[#d7d7d7]': !errors['description'],
@@ -131,11 +131,11 @@ export function BillForm ({ onSubmit, errors }) {
                 onChange={event => handleAmountChange(event.target.value)}
                 placeholder="Preço"
             />
-            <div className="flex gap-2">
+            <div className="flex sm:flex-row flex-col gap-2">
                 <DatePicker placeholder="Referência" setDate={setReference} value={reference} />
                 <DatePicker placeholder="Vencimento" setDate={setDue} value={due} />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 sm:flex-row flex-col">
                 <button
                     className={classNames('w-[17rem] max-w-[17rem] justify-center py-5 gap-7 flex-1 flex bg-[#e7e9ee] rounded-md placeholder-[#969cb2] border', {
                         'bg-[#33cc95] bg-opacity-30': type == 'receive',
