@@ -6,599 +6,58 @@ import { BillForm } from "../components/BillForm";
 import { validateData } from "../formValidation";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { X } from "phosphor-react";
+import api from '../api';
 
 export function Bills () {
     const [bills, setBills] = useState([]);
-    
-    const localBills = [
-        {
-            id: '12211231',
-            category: {
-                id: '1231231232',
-                name: "Vendas",
-                description: 'Isso é uma categoria de vendas',
-                icon: 'ShoppingCart',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            group: {
-                id: '1231231232',
-                name: "Família",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            supplier: {
-                id: '1231231232',
-                name: "Lucas Kaiut de Souza",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            user: {
-                id: '1231231232',
-                group: {
-                    id: '1231231232',
-                    name: "Família",
-                    created_at: '2022-01-01 22:49:38',
-                    updated_at: '2022-01-01 22:49:38',
-                },
-                firstname: 'Lucas',
-                lastname: 'Kaiut de Souza',
-                email: 'lucas.kaiut@gmail.com',
-                photo: 'https://github.com/lucaskaiut.png',
-                phone: '5541997498795',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            reference_at: '2022-01-01 22:37:41',
-            description: 'Pagamento de site',
-            amount: 457.98,
-            due_at: '2022-07-05 22:37:41',
-            original_due_at: '2022-07-05 22:37:41',
-            is_paid: false,
-            is_credit_card: false,
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        },
-        {
-            id: 'ssdfsaf',
-            category: {
-                id: '1231231232',
-                name: "Vendas",
-                description: 'Isso é uma categoria de vendas',
-                icon: 'ShoppingCart',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            group: {
-                id: '1231231232',
-                name: "Família",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            supplier: {
-                id: '1231231232',
-                name: "Lucas Kaiut de Souza",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            user: {
-                id: '1231231232',
-                group: {
-                    id: '1231231232',
-                    name: "Família",
-                    created_at: '2022-01-01 22:49:38',
-                    updated_at: '2022-01-01 22:49:38',
-                },
-                firstname: 'Lucas',
-                lastname: 'Kaiut de Souza',
-                email: 'lucas.kaiut@gmail.com',
-                photo: 'https://github.com/lucaskaiut.png',
-                phone: '5541997498795',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            reference_at: '2022-01-01 22:37:41',
-            description: 'Pagamento de site',
-            amount: 457.98,
-            due_at: '2022-07-29 22:37:41',
-            original_due_at: '2022-07-05 22:37:41',
-            is_paid: false,
-            is_credit_card: false,
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        },
-        {
-            id: 'hgrfdsfhsdh',
-            category: {
-                id: '1231231232',
-                name: "Vendas",
-                description: 'Isso é uma categoria de vendas',
-                icon: 'ShoppingCart',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            group: {
-                id: '1231231232',
-                name: "Família",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            supplier: {
-                id: '1231231232',
-                name: "Lucas Kaiut de Souza",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            user: {
-                id: '1231231232',
-                group: {
-                    id: '1231231232',
-                    name: "Família",
-                    created_at: '2022-01-01 22:49:38',
-                    updated_at: '2022-01-01 22:49:38',
-                },
-                firstname: 'Lucas',
-                lastname: 'Kaiut de Souza',
-                email: 'lucas.kaiut@gmail.com',
-                photo: 'https://github.com/lucaskaiut.png',
-                phone: '5541997498795',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            reference_at: '2022-01-01 22:37:41',
-            description: 'Pagamento de site',
-            amount: 457.98,
-            due_at: '2022-07-29 22:37:41',
-            original_due_at: '2022-07-05 22:37:41',
-            is_paid: true,
-            is_credit_card: false,
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        },
-        {
-            id: 'zxvcxczvxz',
-            category: {
-                id: '1231231232',
-                name: "Vendas",
-                description: 'Isso é uma categoria de vendas',
-                icon: 'ShoppingCart',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            group: {
-                id: '1231231232',
-                name: "Família",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            supplier: {
-                id: '1231231232',
-                name: "Lucas Kaiut de Souza",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            user: {
-                id: '1231231232',
-                group: {
-                    id: '1231231232',
-                    name: "Família",
-                    created_at: '2022-01-01 22:49:38',
-                    updated_at: '2022-01-01 22:49:38',
-                },
-                firstname: 'Lucas',
-                lastname: 'Kaiut de Souza',
-                email: 'lucas.kaiut@gmail.com',
-                photo: 'https://github.com/lucaskaiut.png',
-                phone: '5541997498795',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            reference_at: '2022-01-01 22:37:41',
-            description: 'Pagamento de site',
-            amount: 457.98,
-            due_at: '2022-07-29 22:37:41',
-            original_due_at: '2022-07-05 22:37:41',
-            is_paid: false,
-            is_credit_card: false,
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        },
-        {
-            id: '5675768654',
-            category: {
-                id: '1231231232',
-                name: "Vendas",
-                description: 'Isso é uma categoria de vendas',
-                icon: 'ShoppingCart',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            group: {
-                id: '1231231232',
-                name: "Família",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            supplier: {
-                id: '1231231232',
-                name: "Lucas Kaiut de Souza",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            user: {
-                id: '1231231232',
-                group: {
-                    id: '1231231232',
-                    name: "Família",
-                    created_at: '2022-01-01 22:49:38',
-                    updated_at: '2022-01-01 22:49:38',
-                },
-                firstname: 'Lucas',
-                lastname: 'Kaiut de Souza',
-                email: 'lucas.kaiut@gmail.com',
-                photo: 'https://github.com/lucaskaiut.png',
-                phone: '5541997498795',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            reference_at: '2022-01-01 22:37:41',
-            description: 'Pagamento de site',
-            amount: 457.98,
-            due_at: '2022-07-29 22:37:41',
-            original_due_at: '2022-07-05 22:37:41',
-            is_paid: false,
-            is_credit_card: false,
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        },        {
-            id: 'bnvcgdfsgdsa',
-            category: {
-                id: '1231231232',
-                name: "Vendas",
-                description: 'Isso é uma categoria de vendas',
-                icon: 'ShoppingCart',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            group: {
-                id: '1231231232',
-                name: "Família",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            supplier: {
-                id: '1231231232',
-                name: "Lucas Kaiut de Souza",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            user: {
-                id: '1231231232',
-                group: {
-                    id: '1231231232',
-                    name: "Família",
-                    created_at: '2022-01-01 22:49:38',
-                    updated_at: '2022-01-01 22:49:38',
-                },
-                firstname: 'Lucas',
-                lastname: 'Kaiut de Souza',
-                email: 'lucas.kaiut@gmail.com',
-                photo: 'https://github.com/lucaskaiut.png',
-                phone: '5541997498795',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            reference_at: '2022-01-01 22:37:41',
-            description: 'Pagamento de site',
-            amount: 457.98,
-            due_at: '2022-07-29 22:37:41',
-            original_due_at: '2022-07-05 22:37:41',
-            is_paid: false,
-            is_credit_card: false,
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        },        
-        {
-            id: '789sd78932432dsfer78qw9e',
-            category: {
-                id: '1231231232',
-                name: "Vendas",
-                description: 'Isso é uma categoria de vendas',
-                icon: 'ShoppingCart',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            group: {
-                id: '1231231232',
-                name: "Família",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            supplier: {
-                id: '1231231232',
-                name: "Lucas Kaiut de Souza",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            user: {
-                id: '1231231232',
-                group: {
-                    id: '1231231232',
-                    name: "Família",
-                    created_at: '2022-01-01 22:49:38',
-                    updated_at: '2022-01-01 22:49:38',
-                },
-                firstname: 'Lucas',
-                lastname: 'Kaiut de Souza',
-                email: 'lucas.kaiut@gmail.com',
-                photo: 'https://github.com/lucaskaiut.png',
-                phone: '5541997498795',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            reference_at: '2022-01-01 22:37:41',
-            description: 'Pagamento de site',
-            amount: 457.98,
-            due_at: '2022-07-29 22:37:41',
-            original_due_at: '2022-07-05 22:37:41',
-            is_paid: false,
-            is_credit_card: false,
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        },
-        {
-            id: 'vcxbcvxdfga',
-            category: {
-                id: '1231231232',
-                name: "Vendas",
-                description: 'Isso é uma categoria de vendas',
-                icon: 'ShoppingCart',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            group: {
-                id: '1231231232',
-                name: "Família",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            supplier: {
-                id: '1231231232',
-                name: "Lucas Kaiut de Souza",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            user: {
-                id: '1231231232',
-                group: {
-                    id: '1231231232',
-                    name: "Família",
-                    created_at: '2022-01-01 22:49:38',
-                    updated_at: '2022-01-01 22:49:38',
-                },
-                firstname: 'Lucas',
-                lastname: 'Kaiut de Souza',
-                email: 'lucas.kaiut@gmail.com',
-                photo: 'https://github.com/lucaskaiut.png',
-                phone: '5541997498795',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            reference_at: '2022-01-01 22:37:41',
-            description: 'Pagamento de site',
-            amount: 457.98,
-            due_at: '2022-07-29 22:37:41',
-            original_due_at: '2022-07-05 22:37:41',
-            is_paid: false,
-            is_credit_card: false,
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        },
-        {
-            id: 'sfsafs',
-            category: {
-                id: '1231231232',
-                name: "Vendas",
-                description: 'Isso é uma categoria de vendas',
-                icon: 'ShoppingCart',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            group: {
-                id: '1231231232',
-                name: "Família",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            supplier: {
-                id: '1231231232',
-                name: "Lucas Kaiut de Souza",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            user: {
-                id: '1231231232',
-                group: {
-                    id: '1231231232',
-                    name: "Família",
-                    created_at: '2022-01-01 22:49:38',
-                    updated_at: '2022-01-01 22:49:38',
-                },
-                firstname: 'Lucas',
-                lastname: 'Kaiut de Souza',
-                email: 'lucas.kaiut@gmail.com',
-                photo: 'https://github.com/lucaskaiut.png',
-                phone: '5541997498795',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            reference_at: '2022-01-01 22:37:41',
-            description: 'Pagamento de site',
-            amount: 457.98,
-            due_at: '2022-07-29 22:37:41',
-            original_due_at: '2022-07-05 22:37:41',
-            is_paid: false,
-            is_credit_card: false,
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        },
-        {
-            id: 'cbdfgasas',
-            category: {
-                id: '1231231232',
-                name: "Vendas",
-                description: 'Isso é uma categoria de vendas',
-                icon: 'ShoppingCart',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            group: {
-                id: '1231231232',
-                name: "Família",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            supplier: {
-                id: '1231231232',
-                name: "Lucas Kaiut de Souza",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            user: {
-                id: '1231231232',
-                group: {
-                    id: '1231231232',
-                    name: "Família",
-                    created_at: '2022-01-01 22:49:38',
-                    updated_at: '2022-01-01 22:49:38',
-                },
-                firstname: 'Lucas',
-                lastname: 'Kaiut de Souza',
-                email: 'lucas.kaiut@gmail.com',
-                photo: 'https://github.com/lucaskaiut.png',
-                phone: '5541997498795',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            reference_at: '2022-01-01 22:37:41',
-            description: 'Pagamento de site',
-            amount: 457.98,
-            due_at: '2022-07-29 22:37:41',
-            original_due_at: '2022-07-05 22:37:41',
-            is_paid: false,
-            is_credit_card: false,
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        },
-        {
-            id: 'sfda489fds789dsaf789',
-            category: {
-                id: '1231231232',
-                name: "Vendas",
-                description: 'Isso é uma categoria de vendas',
-                icon: 'ShoppingCart',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            group: {
-                id: '1231231232',
-                name: "Família",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            supplier: {
-                id: '1231231232',
-                name: "Lucas Kaiut de Souza",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            user: {
-                id: '1231231232',
-                group: {
-                    id: '1231231232',
-                    name: "Família",
-                    created_at: '2022-01-01 22:49:38',
-                    updated_at: '2022-01-01 22:49:38',
-                },
-                firstname: 'Lucas',
-                lastname: 'Kaiut de Souza',
-                email: 'lucas.kaiut@gmail.com',
-                photo: 'https://github.com/lucaskaiut.png',
-                phone: '5541997498795',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            reference_at: '2022-01-01 22:37:41',
-            description: 'Pagamento de site',
-            amount: 457.98,
-            due_at: '2022-07-29 22:37:41',
-            original_due_at: '2022-07-05 22:37:41',
-            is_paid: false,
-            is_credit_card: false,
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        },
-        {
-            id: '78978921789213789213',
-            category: {
-                id: '1231231232',
-                name: "Vendas",
-                description: 'Isso é uma categoria de vendas',
-                icon: 'ShoppingCart',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            group: {
-                id: '1231231232',
-                name: "Família",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            supplier: {
-                id: '1231231232',
-                name: "Lucas Kaiut de Souza",
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            user: {
-                id: '1231231232',
-                group: {
-                    id: '1231231232',
-                    name: "Família",
-                    created_at: '2022-01-01 22:49:38',
-                    updated_at: '2022-01-01 22:49:38',
-                },
-                firstname: 'Lucas',
-                lastname: 'Kaiut de Souza',
-                email: 'lucas.kaiut@gmail.com',
-                photo: 'https://github.com/lucaskaiut.png',
-                phone: '5541997498795',
-                created_at: '2022-01-01 22:49:38',
-                updated_at: '2022-01-01 22:49:38',
-            },
-            reference_at: '2022-01-01 22:37:41',
-            description: 'Pagamento de site',
-            amount: 457.98,
-            due_at: '2022-07-29 22:37:41',
-            original_due_at: '2022-07-05 22:37:41',
-            is_paid: false,
-            is_credit_card: false,
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        }
-    ];
+    const [totalPay, setTotalPay] = useState(0);
+    const [totalReceive, setTotalReceive] = useState(0);
+    const [formErrors, setFormErrors] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
 
     useEffect(() => {
-        setBills(localBills);
+        async function setData() {
+            const data = await loadData();
+
+            setBills(data.data);
+
+            setTotalReceive(0);
+
+            setTotalPay(data.additional.total);
+        }
+
+        setData();
+        
     }, []);
 
-    function fetchData () {
-        setTimeout(loadData, 2000);
+    async function fetchMoreData () {
+        const data = await loadData(currentPage + 1);
+
+        setBills([...bills, ...data.data]);
+
+        setTotalReceive(0);
+
+        setTotalPay(data.additional.total);
+
+        setCurrentPage((currentPage) => currentPage + 1);
+
+        if (data.pagination.last_page === data.pagination.current_page) {
+            setHasMore(false);
+        } 
     }
 
-    function loadData() { 
-        const newBills = [...bills, ...bills];
-            setBills(newBills);
+    async function loadData(page = 1) { 
+        const response = await api.get('/bill', {
+            params: {
+                page
+            }
+        });
+
+        const { data } = response;
+
+        return data;
     }
 
     const formValidation = {
@@ -609,34 +68,39 @@ export function Bills () {
             'required',
             'numeric'
         ],
-        reference: [
+        reference_at: [
             'required',
-            'date'
         ],
-        due: [
+        due_at: [
             'required',
-            'date'
+        ],
+        original_due_at: [
+            'required',
         ],
         type: [
             'required'
         ],
-        supplier: [
+        supplier_id: [
             'required'
         ],
-        category: [
+        category_id: [
             'required'
         ]
     }
 
-    const [formErrors, setFormErrors] = useState([]);
 
     function handleCreateBill (billData) {
-        const errors = validateData(billData, formValidation);
+        const { errors, hasError } = validateData(billData, formValidation);
 
         setFormErrors(errors);
-    }
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+        if (!hasError) {
+            api.post('/bill', { ...billData }).then(() => {
+                loadData();
+                toggleModal();
+            });
+        }
+    }
 
     function toggleModal () {
         setIsModalOpen(!isModalOpen);
@@ -645,9 +109,9 @@ export function Bills () {
     return (
         <div className="flex flex-col w-full px-2 lg:px-52 md:mt-10 mt-1">
             <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
-                <Card variant='receive' amount={1829.72} />
-                <Card variant='pay' amount={1829.72} />
-                <Card variant='total' amount={1829.72} />
+                <Card variant='receive' amount={totalReceive} />
+                <Card variant='pay' amount={totalPay} />
+                <Card variant='total' amount={totalReceive - totalPay} />
             </div>
             <div className="h-full bg-white sm:mt-5 mt-2 rounded-md py-6 sm:px-8 px-2 shadow-xl">
                 <button className="bg-brand sm:text-base text-sm sm:py-3 sm:px-8 py-3 px-3 rounded-md hover:bg-[#118B3A] transition-colors" onClick={toggleModal}>
@@ -656,19 +120,21 @@ export function Bills () {
                 <div id="scrollableBills" className="w-full sm:mt-8 m-1 flex flex-col gap-2 min-h-[550px] max-h-[550px] overflow-y-auto">
                     <InfiniteScroll
                         dataLength={bills.length} //This is important field to render the next data
-                        next={fetchData}
-                        hasMore={true}
+                        next={fetchMoreData}
+                        hasMore={hasMore}
                         scrollableTarget="scrollableBills"
+                        scrollThreshold={1}
                     >
                         { bills.map(bill => {
                             return <TableRow 
                                 key={bill.id} 
-                                variant='receive' 
+                                variant='pay' 
                                 isPaid={bill.is_paid} 
-                                supplier={bill.supplier.name} 
+                                supplier={bill.supplier} 
                                 dueAt={bill.due_at} 
                                 description={bill.description} 
                                 category={bill.category}
+                                amount={bill.amount}
                             />
                         }) }
                     </InfiniteScroll>

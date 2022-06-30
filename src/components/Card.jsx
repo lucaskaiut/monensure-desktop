@@ -24,8 +24,10 @@ export function Card ({ variant, amount }) {
                 { variants[variant].icon }
             </div>
             <strong className="sm:text-4xl text-lg text-[#363F5F]">
-                <NumberFormat
+                <NumberFormat 
                     value={amount} 
+                    fixedDecimalScale
+                    decimalScale={2}
                     displayType="text" 
                     decimalSeparator=","
                     thousandSeparator="."

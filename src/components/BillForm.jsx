@@ -1,55 +1,25 @@
 import classNames from "classnames";
+import { format } from "date-fns/esm";
+import ptBR from "date-fns/locale/pt-BR";
 import { ArrowCircleDown, ArrowCircleUp } from "phosphor-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import api from "../api";
 import { reverseString } from "../utils";
 import { DatePicker } from "./DatePicker";
 
 export function BillForm ({ onSubmit, errors }) {
-    const categories = [
-        {
-            id: '1231231232',
-            name: "Vendas",
-            description: 'Isso é uma categoria de vendas',
-            icon: 'ShoppingCart',
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        },
-        {
-            id: 'zxcvzxv',
-            name: "Mercado",
-            description: 'Isso é uma categoria do mercado',
-            icon: 'ShoppingCart',
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        }
-    ];
+    const [categories, setCategories] = useState([]);
+    const [suppliers, setSuppliers] = useState([]);
 
-    const suppliers = [
-        {
-            id: '1231231232',
-            name: "Adonias Barbosa de Souza",
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        },
-        {
-            id: 'fdsafda',
-            name: "Pag!",
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        },
-        {
-            id: 'cvzxvzx',
-            name: "Digio",
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        },
-        {
-            id: '23eqwsea',
-            name: "Copel",
-            created_at: '2022-01-01 22:49:38',
-            updated_at: '2022-01-01 22:49:38',
-        }
-    ]
+    useEffect(() => {
+        api.get('/supplier').then(({ data }) => {
+            setSuppliers(data.data);
+        });
+
+        api.get('/category').then(({ data }) => {
+            setCategories(data.data);
+        });
+    },[]);
 
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
@@ -70,11 +40,14 @@ export function BillForm ({ onSubmit, errors }) {
         let billData = {
             description,
             amount,
-            reference,
-            due,
+            reference_at: format(reference, "yyyy-MM-dd", { locale: ptBR }),
+            due_at: format(due, "yyyy-MM-dd", { locale: ptBR }),
+            original_due_at: format(due, "yyyy-MM-dd", { locale: ptBR }),
             type,
-            category,
-            supplier
+            category_id: category,
+            supplier_id: supplier,
+            is_paid: false,
+            is_credit_card: false,
         };
 
         onSubmit(billData);

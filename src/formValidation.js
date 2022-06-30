@@ -21,6 +21,8 @@ export function validateData(data, validationRules) {
 
     let errors = [];
 
+    let hasError = false;
+
     for (let key in validationKeys) {
         const fieldRules = validationRules[validationKeys[key]];
 
@@ -29,11 +31,13 @@ export function validateData(data, validationRules) {
 
             if (!ruleFunction(data, validationKeys[key])) {
                 errors[validationKeys[key]] = true;
+                
+                hasError = true;
             } else {
                 errors[validationKeys[key]] = false;
             }
         }
     }
 
-    return errors;
+    return {errors, hasError};
 }
