@@ -7,20 +7,9 @@ import api from "../api";
 import { reverseString } from "../utils";
 import { DatePicker } from "./DatePicker";
 
-export function BillForm ({ onSubmit, errors }) {
+export function BillForm ({ onSubmit, errors, bill }) {
     const [categories, setCategories] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
-
-    useEffect(() => {
-        api.get('/supplier').then(({ data }) => {
-            setSuppliers(data.data);
-        });
-
-        api.get('/category').then(({ data }) => {
-            setCategories(data.data);
-        });
-    },[]);
-
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
     const [maskedAmount, setMaskedAmount] = useState('');
@@ -29,6 +18,16 @@ export function BillForm ({ onSubmit, errors }) {
     const [type, setType] = useState('');
     const [category, setCategory] = useState('');
     const [supplier, setSupplier] = useState('');
+
+    useEffect(() => {
+        api.get('/supplier?per_page=100').then(({ data }) => {
+            setSuppliers(data.data);
+        });
+
+        api.get('/category?per_page=100').then(({ data }) => {
+            setCategories(data.data);
+        });
+    },[]);
 
     function setBillType (billType) {
         setType(billType);
@@ -88,7 +87,7 @@ export function BillForm ({ onSubmit, errors }) {
                     'placeholder-[#E52E4D]': errors['description'],
                 })} 
                 type="text"
-                value={description}
+                value={bill ? bill.description : description}
                 onChange={event => setDescription(event.target.value)}
                 placeholder="Descrição"
             />
@@ -139,11 +138,12 @@ export function BillForm ({ onSubmit, errors }) {
             </div>
             <select
                 className={classNames('form-select text-[#969CB2] bg-[#e7e9ee] appearance-none rounded-md py-5 pl-6 w-full placeholder-[#969cb2] border', {
-                    'border-[#d7d7d7]': !errors['category'],
-                    'border-[#E52E4D]': errors['category']
+                    'border-[#d7d7d7]': !errors['category_id'],
+                    'border-[#E52E4D]': errors['category_id']
                 })} 
                 type="text"
                 onChange={event => setCategory(event.target.value)}
+                value={bill !== null ? bill.category.id : category}
             >
                 <option value="">Categoria</option>
                 {
@@ -154,11 +154,12 @@ export function BillForm ({ onSubmit, errors }) {
             </select>
             <select
                 className={classNames('form-select text-[#969CB2] bg-[#e7e9ee] appearance-none rounded-md py-5 pl-6 w-full placeholder-[#969cb2] border', {
-                    'border-[#d7d7d7]': !errors['supplier'],
-                    'border-[#E52E4D]': errors['supplier']
+                    'border-[#d7d7d7]': !errors['supplier_id'],
+                    'border-[#E52E4D]': errors['supplier_id']
                 })} 
                 type="text"
                 onChange={event => setSupplier(event.target.value)}
+                value={bill !== null ? bill.supplier.id : supplier}
             >
                 <option value="">Fornecedor</option>
                 {
@@ -168,7 +169,7 @@ export function BillForm ({ onSubmit, errors }) {
                 }
             </select>
             <button className="text-white font-bold text-base bg-brand py-3 w-full rounded-md hover:bg-[#118B3A] transition-colors" type="submit">
-                Cadastrar
+                { bill !== null ? 'Salvar' : 'Cadastrar'}
             </button>
         </form>
     );

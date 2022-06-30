@@ -19,6 +19,8 @@ function date(data, field) {
 export function validateData(data, validationRules) {
     const validationKeys = Object.keys(validationRules);
 
+    console.log(data);
+
     let errors = [];
 
     let hasError = false;

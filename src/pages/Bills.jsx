@@ -7,6 +7,19 @@ import { validateData } from "../formValidation";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { X } from "phosphor-react";
 import api from '../api';
+import { format } from "date-fns";
+import { Animated } from "react-animated-css";
+import TextField from '@mui/material/TextField';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import useLongPress from "../hooks/useLongPress";
 
 export function Bills () {
     const [bills, setBills] = useState([]);
@@ -16,6 +29,12 @@ export function Bills () {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
+    const [selectedBills, setSelectedBills] = useState([]);
+    const [selectedBill, setSelectedBill] = useState(null);
+    const [startDueDateFilter, setStartDueDateFilter] = useState(null);
+    const [endDueDateFilter, setEndDueDateFilter] = useState(null);
+    const [sortOrder, setSortOrder] = useState(null);
+    const [isPaidFilter, setIsPaidFilter] = useState(false);
 
     useEffect(() => {
         async function setData() {
@@ -31,6 +50,20 @@ export function Bills () {
         setData();
         
     }, []);
+
+    useEffect(() => {
+        fetchData();
+    }, [startDueDateFilter, endDueDateFilter, sortOrder, isPaidFilter]);
+
+    async function fetchData() {
+        const data = await loadData();
+
+        setBills(data.data);
+
+        setTotalReceive(0);
+
+        setTotalPay(data.additional.total);
+    }
 
     async function fetchMoreData () {
         const data = await loadData(currentPage + 1);
@@ -49,11 +82,25 @@ export function Bills () {
     }
 
     async function loadData(page = 1) { 
-        const response = await api.get('/bill', {
-            params: {
-                page
-            }
-        });
+        let params = '?';
+
+        params += `page=${page}`;
+
+        params += `&filter[is_paid]=${isPaidFilter}`;
+
+        if (startDueDateFilter != null) {
+            params += `&filter[due_after]=${format(startDueDateFilter, 'yyyy-MM-dd')}`;
+        }
+
+        if (endDueDateFilter != null) {
+            params += `&filter[due_before]=${format(endDueDateFilter, 'yyyy-MM-dd')}`;
+        }
+
+        if (sortOrder) {
+            params += `&sort=${sortOrder}`;
+        }
+
+        const response = await api.get(`/bill${params}`);
 
         const { data } = response;
 
@@ -102,9 +149,78 @@ export function Bills () {
         }
     }
 
-    function toggleModal () {
+    function onRowClick(billId) {
+        
+    }
+
+    function handleNewTransactionClick () {
+        toggleModal();
+    }
+
+    function toggleModal (bill = null) {
+        setSelectedBill(bill);
+
         setIsModalOpen(!isModalOpen);
     }
+
+    function paySelectedBills() {
+        console.log(selectedBills);
+    }
+
+    function handleSelectedBill (billId) {
+        const prevSelected = selectedBills;
+
+        if (prevSelected.length > 0) {
+            let newSelected = [];
+
+            if (prevSelected.includes(billId)) {
+                newSelected = prevSelected.filter((id) => {
+                    return id != billId;
+                });
+            } else {
+                newSelected = [...prevSelected, billId];
+            }
+    
+            setSelectedBills(newSelected);
+        } else {
+            const bill = bills.filter(value => {
+                return value.id === billId;
+            });
+
+            toggleModal(bill[0]);
+        }
+    }
+
+    const onLongPress = (data) => {
+        const { billId } = data;
+
+        const prevSelected = selectedBills;
+
+        let newSelected = [];
+
+        if (prevSelected.includes(billId)) {
+            newSelected = prevSelected.filter((id) => {
+                return id != billId;
+            });
+        } else {
+            newSelected = [...prevSelected, billId];
+        }
+
+        setSelectedBills(newSelected);
+    };
+
+    const onClick = (data) => {
+        const { billId } = data;
+
+        handleSelectedBill(billId);
+    }
+
+    const defaultOptions = {
+        shouldPreventDefault: true,
+        delay: 400,
+    };
+
+    const longPressEvent = useLongPress(onLongPress, onClick, defaultOptions);
 
     return (
         <div className="flex flex-col w-full px-2 lg:px-52 md:mt-10 mt-1">
@@ -114,10 +230,67 @@ export function Bills () {
                 <Card variant='total' amount={totalReceive - totalPay} />
             </div>
             <div className="h-full bg-white sm:mt-5 mt-2 rounded-md py-6 sm:px-8 px-2 shadow-xl">
-                <button className="bg-brand sm:text-base text-sm sm:py-3 sm:px-8 py-3 px-3 rounded-md hover:bg-[#118B3A] transition-colors" onClick={toggleModal}>
-                    Nova transação
-                </button>
-                <div id="scrollableBills" className="w-full sm:mt-8 m-1 flex flex-col gap-2 min-h-[550px] max-h-[550px] overflow-y-auto">
+                <div className="flex justify-between">
+                    <button 
+                        className="bg-brand sm:text-base text-sm sm:py-3 sm:px-8 py-3 px-3 rounded-md hover:bg-[#118B3A] transition-colors" 
+                        onClick={handleNewTransactionClick}
+                    >
+                        Nova transação
+                    </button>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DatePicker
+                            label="Vencimento de"
+                            value={startDueDateFilter}
+                            onChange={(newValue) => { setStartDueDateFilter(newValue) }}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
+                    </LocalizationProvider>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DatePicker
+                            label="Vencimento até"
+                            value={endDueDateFilter}
+                            onChange={(newValue) => { setEndDueDateFilter(newValue) }}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
+                    </LocalizationProvider>
+                    <div className="w-56">
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Ordenar</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={sortOrder}
+                                label="Ordenar"
+                                onChange={event => setSortOrder(event.target.value)}
+                            >
+                                <MenuItem value=''>Selecione</MenuItem>
+                                <MenuItem value='supplier'>Fornecedor</MenuItem>
+                                <MenuItem value='due_at'>Vencimento</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                    <FormControlLabel 
+                        control={<Checkbox checked={isPaidFilter} />} 
+                        label="Pago" 
+                        onChange={event => setIsPaidFilter(event.target.checked)}
+                        className="text-black"
+                    />
+                    <Animated 
+                        animationIn="headShake"
+                        animationOut="fadeOut"
+                        animationOutDuration={500}
+                        isVisible={selectedBills.length > 0}
+                    >
+                        <button 
+                            className='bg-[#e52e4d] sm:text-base text-sm sm:py-3 sm:px-8 py-3 px-3 rounded-md hover:bg-[#96031b] transition-colors'
+                            onClick={paySelectedBills}
+                        >
+                            Pagar
+                        </button>
+                    </Animated>
+
+                </div>
+                <div id="scrollableBills" className="w-full sm:mt-8 m-1 flex flex-col min-h-[550px] max-h-[550px] overflow-y-auto">
                     <InfiniteScroll
                         dataLength={bills.length} //This is important field to render the next data
                         next={fetchMoreData}
@@ -127,14 +300,18 @@ export function Bills () {
                     >
                         { bills.map(bill => {
                             return <TableRow 
-                                key={bill.id} 
+                                key={bill.id}
+                                id={bill.id} 
                                 variant='pay' 
                                 isPaid={bill.is_paid} 
-                                supplier={bill.supplier} 
+                                supplier={bill.supplier.name} 
                                 dueAt={bill.due_at} 
                                 description={bill.description} 
                                 category={bill.category}
                                 amount={bill.amount}
+                                onRowClick={onRowClick}
+                                isSelected={selectedBills.includes(bill.id)}
+                                longPress={longPressEvent}
                             />
                         }) }
                     </InfiniteScroll>
@@ -148,7 +325,7 @@ export function Bills () {
                     <div className="relative bg-white text-zinc-600 max-w-full sm:min-w-[36rem] min-h-[46.25rem] rounded-lg py-16 px-4 sm:px-12">
                         <X className="top-3 right-3 absolute" onClick={toggleModal} />
                         <h1 className="text-2xl">Cadastrar nova transação</h1>
-                        <BillForm onSubmit={handleCreateBill} errors={formErrors}/>
+                        <BillForm onSubmit={handleCreateBill} errors={formErrors} bill={selectedBill}/>
                     </div>
                 </Modal>
         </div>

@@ -3,10 +3,20 @@ import NumberFormat from 'react-number-format';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
-export function TableRow ({ variant, isPaid, description, supplier, category, dueAt, amount }) {
+export function TableRow ({ id, variant, isPaid, description, supplier, category, dueAt, amount, onRowClick, isSelected, longPress }) {
+    const { onMouseDown, onTouchStart, onMouseUp, onMouseLeave, onTouchEnd } = longPress;
+    
     return (
-        <div className={classNames('cursor-pointer hover:bg-slate-200 transition-colors flex text-[#363f5f] justify-between items-center bg-[#fff] sm:px-3 px-1 py-3 rounded-md shadow-xl', {
-            'line-through': isPaid
+        <div 
+            onMouseDown={(event) => onMouseDown(event, { billId: id })}
+            onTouchStart={(event) => onTouchStart(event, { billId: id })}
+            onMouseUp={(event) => onMouseUp(event, { billId: id })}
+            onMouseLeave={(event) => onMouseLeave(event, { billId: id })}
+            onTouchEnd={(event) => onTouchEnd(event, { billId: id })}
+
+            className={classNames('mt-1 cursor-pointer hover:bg-zinc-200 transition-colors flex text-[#363f5f] justify-between items-center bg-[#fff] sm:px-3 px-1 py-3 rounded-md shadow', {
+            'line-through': isPaid,
+            'bg-slate-200': isSelected,
         })}>
             <div className="flex sm:w-[50px]">
                 <div>
