@@ -5,21 +5,11 @@ import { TableRow } from '../components/TableRow';
 import { BillForm } from "../components/BillForm";
 import { validateData } from "../formValidation";
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Plus, X } from "phosphor-react";
+import { X } from "phosphor-react";
 import api from '../api';
 import { format } from "date-fns";
-import { Animated } from "react-animated-css";
-import TextField from '@mui/material/TextField';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import useLongPress from "../hooks/useLongPress";
+import { TableHeader } from "../components/TableHeader";
 
 export function Bills () {
     const [bills, setBills] = useState([]);
@@ -50,10 +40,6 @@ export function Bills () {
         setData();
         
     }, []);
-
-    useEffect(() => {
-        fetchData();
-    }, [startDueDateFilter, endDueDateFilter, sortOrder, isPaidFilter]);
 
     async function fetchData() {
         const data = await loadData();
@@ -153,18 +139,10 @@ export function Bills () {
         
     }
 
-    function handleNewTransactionClick () {
-        toggleModal();
-    }
-
     function toggleModal (bill = null) {
         setSelectedBill(bill);
 
         setIsModalOpen(!isModalOpen);
-    }
-
-    function paySelectedBills() {
-        console.log(selectedBills);
     }
 
     function handleSelectedBill (billId) {
@@ -224,73 +202,24 @@ export function Bills () {
 
     return (
         <div className="flex flex-col w-full px-2 2xl:px-52 xl:px-32 md:mt-10 mt-1">
-            <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
+            <div className="flex gap-2 justify-between items-center">
                 <Card variant='receive' amount={totalReceive} />
                 <Card variant='pay' amount={totalPay} />
                 <Card variant='total' amount={totalReceive - totalPay} />
             </div>
             <div className="h-full bg-white sm:mt-5 mt-2 rounded-md py-6 xl:px-8 px-2 shadow-xl">
-                <div className="flex justify-between gap-2">
-                    <button 
-                        className="bg-brand sm:text-base text-sm sm:py-3 sm:px-8 py-3 px-3 rounded-md hover:bg-[#118B3A] transition-colors" 
-                        onClick={handleNewTransactionClick}
-                    >
-                        <p className="xl:block hidden">Nova transação</p>
-                        <Plus size={24} className="xl:hidden block" />
-                    </button>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DatePicker
-                            label="Vencimento de"
-                            value={startDueDateFilter}
-                            onChange={(newValue) => { setStartDueDateFilter(newValue) }}
-                            renderInput={(params) => <TextField {...params} />}
-                        />
-                    </LocalizationProvider>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DatePicker
-                            label="Vencimento até"
-                            value={endDueDateFilter}
-                            onChange={(newValue) => { setEndDueDateFilter(newValue) }}
-                            renderInput={(params) => <TextField {...params} />}
-                        />
-                    </LocalizationProvider>
-                    <div className="w-56">
-                        <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">Ordenar</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={sortOrder}
-                                label="Ordenar"
-                                onChange={event => setSortOrder(event.target.value)}
-                            >
-                                <MenuItem value=''>Selecione</MenuItem>
-                                <MenuItem value='supplier'>Fornecedor</MenuItem>
-                                <MenuItem value='due_at'>Vencimento</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </div>
-                    <FormControlLabel 
-                        control={<Checkbox checked={isPaidFilter} />} 
-                        label="Pago" 
-                        onChange={event => setIsPaidFilter(event.target.checked)}
-                        className="text-black"
-                    />
-                    <Animated 
-                        animationIn="headShake"
-                        animationOut="fadeOut"
-                        animationOutDuration={500}
-                        isVisible={selectedBills.length > 0}
-                    >
-                        <button 
-                            className='bg-[#e52e4d] sm:text-base text-sm sm:py-3 sm:px-8 py-3 px-3 rounded-md hover:bg-[#96031b] transition-colors'
-                            onClick={paySelectedBills}
-                        >
-                            Pagar
-                        </button>
-                    </Animated>
-
-                </div>
+                <TableHeader 
+                    fetchData={() => fetchData()} 
+                    startDueDateFilter={startDueDateFilter}
+                    endDueDateFilter={endDueDateFilter}
+                    sortOrder={sortOrder}
+                    isPaidFilter={isPaidFilter}
+                    setStartDueDateFilter={setStartDueDateFilter}
+                    setEndDueDateFilter={setEndDueDateFilter}
+                    setSortOrder={setSortOrder}
+                    setIsPaidFilter={setIsPaidFilter}
+                    selectedBills={selectedBills}
+                />
                 <div id="scrollableBills" className="w-full sm:mt-8 m-1 flex flex-col min-h-[550px] max-h-[550px] overflow-y-auto">
                     <InfiniteScroll
                         dataLength={bills.length} //This is important field to render the next data

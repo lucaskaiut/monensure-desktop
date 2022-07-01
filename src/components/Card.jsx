@@ -18,12 +18,12 @@ export function Card ({ variant, amount }) {
     }
 
     return (
-        <div className="bg-white rounded-md text-zinc-400 max-w-full w-full md:w-80 h-20 sm:h-32 flex flex-col gap-5 justify-center px-5 shadow-xl">
+        <div className="bg-white rounded-md text-zinc-400 max-w-full w-full md:w-80 h-14 sm:h-32 flex flex-col md:items-stretch items-center md:gap-5 justify-center md:px-5 shadow-xl">
             <div className="flex justify-between">
-                <p>{ variants[variant].label }</p>
+                <p className="md:block hidden">{ variants[variant].label }</p>
                 { variants[variant].icon }
             </div>
-            <strong className="lg:text-4xl md:text-2xl text-lg text-[#363F5F]">
+            <p className="md:font-extrabold lg:text-4xl md:text-2xl text-sm text-[#363F5F]">
                 <NumberFormat 
                     value={amount} 
                     fixedDecimalScale
@@ -33,7 +33,7 @@ export function Card ({ variant, amount }) {
                     thousandSeparator="."
                     prefix="R$ "
                 />
-            </strong>
+            </p>
         </div>
     );
 }
