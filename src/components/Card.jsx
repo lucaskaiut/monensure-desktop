@@ -23,7 +23,7 @@ export function Card ({ variant, amount }) {
                 <p>{ variants[variant].label }</p>
                 { variants[variant].icon }
             </div>
-            <strong className="sm:text-4xl text-lg text-[#363F5F]">
+            <strong className="lg:text-4xl md:text-2xl text-lg text-[#363F5F]">
                 <NumberFormat 
                     value={amount} 
                     fixedDecimalScale

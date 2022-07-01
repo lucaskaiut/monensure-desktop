@@ -5,7 +5,7 @@ import { TableRow } from '../components/TableRow';
 import { BillForm } from "../components/BillForm";
 import { validateData } from "../formValidation";
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { X } from "phosphor-react";
+import { Plus, X } from "phosphor-react";
 import api from '../api';
 import { format } from "date-fns";
 import { Animated } from "react-animated-css";
@@ -223,19 +223,20 @@ export function Bills () {
     const longPressEvent = useLongPress(onLongPress, onClick, defaultOptions);
 
     return (
-        <div className="flex flex-col w-full px-2 lg:px-52 md:mt-10 mt-1">
+        <div className="flex flex-col w-full px-2 2xl:px-52 xl:px-32 md:mt-10 mt-1">
             <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
                 <Card variant='receive' amount={totalReceive} />
                 <Card variant='pay' amount={totalPay} />
                 <Card variant='total' amount={totalReceive - totalPay} />
             </div>
-            <div className="h-full bg-white sm:mt-5 mt-2 rounded-md py-6 sm:px-8 px-2 shadow-xl">
-                <div className="flex justify-between">
+            <div className="h-full bg-white sm:mt-5 mt-2 rounded-md py-6 xl:px-8 px-2 shadow-xl">
+                <div className="flex justify-between gap-2">
                     <button 
                         className="bg-brand sm:text-base text-sm sm:py-3 sm:px-8 py-3 px-3 rounded-md hover:bg-[#118B3A] transition-colors" 
                         onClick={handleNewTransactionClick}
                     >
-                        Nova transação
+                        <p className="xl:block hidden">Nova transação</p>
+                        <Plus size={24} className="xl:hidden block" />
                     </button>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DatePicker
