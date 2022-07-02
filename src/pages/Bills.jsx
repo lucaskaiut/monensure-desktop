@@ -208,18 +208,21 @@ export function Bills () {
                 <Card variant='total' amount={totalReceive - totalPay} />
             </div>
             <div className="h-full bg-white sm:mt-5 mt-2 rounded-md py-6 xl:px-8 px-2 shadow-xl">
-                <TableHeader 
-                    fetchData={() => fetchData()} 
-                    startDueDateFilter={startDueDateFilter}
-                    endDueDateFilter={endDueDateFilter}
-                    sortOrder={sortOrder}
-                    isPaidFilter={isPaidFilter}
-                    setStartDueDateFilter={setStartDueDateFilter}
-                    setEndDueDateFilter={setEndDueDateFilter}
-                    setSortOrder={setSortOrder}
-                    setIsPaidFilter={setIsPaidFilter}
-                    selectedBills={selectedBills}
-                />
+                <div className="md:block hidden">
+                    <TableHeader 
+                        fetchData={() => fetchData()} 
+                        startDueDateFilter={startDueDateFilter}
+                        endDueDateFilter={endDueDateFilter}
+                        sortOrder={sortOrder}
+                        isPaidFilter={isPaidFilter}
+                        setStartDueDateFilter={setStartDueDateFilter}
+                        setEndDueDateFilter={setEndDueDateFilter}
+                        setSortOrder={setSortOrder}
+                        setIsPaidFilter={setIsPaidFilter}
+                        selectedBills={selectedBills}
+                        toggleModal={() => toggleModal()}
+                    />
+                </div>
                 <div id="scrollableBills" className="w-full sm:mt-8 m-1 flex flex-col min-h-[550px] max-h-[550px] overflow-y-auto">
                     <InfiniteScroll
                         dataLength={bills.length} //This is important field to render the next data
@@ -247,17 +250,34 @@ export function Bills () {
                     </InfiniteScroll>
                 </div>
             </div>
-                <Modal
-                    open={isModalOpen}
-                    onClose={toggleModal}
-                    className="flex justify-center items-center max-w-full"
-                >
-                    <div className="relative bg-white text-zinc-600 max-w-full sm:min-w-[36rem] min-h-[46.25rem] rounded-lg py-16 px-4 sm:px-12">
-                        <X className="top-3 right-3 absolute" onClick={toggleModal} />
-                        <h1 className="text-2xl">Cadastrar nova transação</h1>
-                        <BillForm onSubmit={handleCreateBill} errors={formErrors} bill={selectedBill}/>
-                    </div>
-                </Modal>
+            <Modal
+                open={isModalOpen}
+                onClose={toggleModal}
+                className="flex justify-center items-center max-w-full"
+            >
+                <div className="relative bg-white text-zinc-600 max-w-full sm:min-w-[36rem] min-h-[46.25rem] rounded-lg py-16 px-4 sm:px-12">
+                    <X className="top-3 right-3 absolute" onClick={toggleModal} />
+                    <h1 className="text-2xl">Cadastrar nova transação</h1>
+                    <BillForm onSubmit={handleCreateBill} errors={formErrors} bill={selectedBill}/>
+                </div>
+            </Modal>
+            <div
+                className="md:hidden block"
+            >
+                <TableHeader 
+                    fetchData={() => fetchData()} 
+                    startDueDateFilter={startDueDateFilter}
+                    endDueDateFilter={endDueDateFilter}
+                    sortOrder={sortOrder}
+                    isPaidFilter={isPaidFilter}
+                    setStartDueDateFilter={setStartDueDateFilter}
+                    setEndDueDateFilter={setEndDueDateFilter}
+                    setSortOrder={setSortOrder}
+                    setIsPaidFilter={setIsPaidFilter}
+                    selectedBills={selectedBills}
+                    toggleModal={() => toggleModal()}
+                />
+            </div>
         </div>
     )
 }

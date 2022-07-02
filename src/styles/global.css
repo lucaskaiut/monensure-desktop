@@ -6,3 +6,14 @@ body {
     @apply bg-[#fefefe] text-white overflow-hidden;
     -webkit-font-smoothing: antialiased;
 }
+
+@media (max-width: 425px) {
+    #scrollableBills::-webkit-scrollbar {
+        display: none;
+    }
+
+    #scrollableBills {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+}
