@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import api from '../api';
 
 const DEFAULT_VALUE = { 
@@ -38,6 +38,8 @@ export function AuthContextProvider ({ children }) {
 
             return true;
         } catch ({ response }) {
+            toast.error("Oops! Tivemos um problema ao realizar login. Verifique suas credenciais e tente novamente.");
+
             return false;
         }
     }
