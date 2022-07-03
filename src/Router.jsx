@@ -1,16 +1,18 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Bills } from "./pages/Bills";
-import { Categories } from "./pages/Categories";
-import { Sidebar } from './components/Sidebar'
+import { BrowserRouter } from "react-router-dom";
+import { AppRoutes } from "./AppRoutes";
+import { AuthRoutes } from './AuthRoutes';
+import { useAuth } from "./hooks/useAuth";
 
 export function Router () {
+    const { isUserLogged } = useAuth();
+
     return (
         <BrowserRouter>
-            {/* <Sidebar /> */}
-            <Routes>
-                <Route path="/" element={<Bills />} />
-                <Route path="/categories" element={<Categories />} />
-            </Routes>
+            {
+                isUserLogged
+                ? <AppRoutes />
+                : <AuthRoutes />
+            }
         </BrowserRouter>
     );
 }

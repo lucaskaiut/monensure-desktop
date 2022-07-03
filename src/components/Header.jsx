@@ -2,9 +2,21 @@ import { Logo } from "./Logo";
 import { CaretDown } from "phosphor-react";
 import { Animated } from "react-animated-css";
 import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export function Header() {
   const [isDropDownVisible, setIsDropdownvisible] = useState(false);
+
+  const { logout } = useAuth();
+
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    await logout();
+
+    navigate('/login');
+  }
 
   function toggleDropdown() {
     setIsDropdownvisible(!isDropDownVisible);
@@ -37,8 +49,9 @@ export function Header() {
           <div class="w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div class="py-1">
               <button
-                type="submit"
+                type="button"
                 class="text-gray-700 block w-full text-left px-4 py-2 text-sm"
+                onClick={handleLogout}
               >
                 Sair
               </button>
