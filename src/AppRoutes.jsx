@@ -8,7 +8,7 @@ export function AppRoutes () {
         <div className="flex flex-col w-full">
             <Header />
             <Routes>
-                <Route path="/bills" element={<Bills />} />
+                <Route path="/" element={<Bills />} />
                 <Route path="/categories" element={<Categories />} />
             </Routes>
         </div>

@@ -19,7 +19,7 @@ export function Login () {
         const userHasLogged = await login(email, password);
 
         if (userHasLogged) {
-            navigate('/bills');
+            navigate('/');
         } else {
 
         }
