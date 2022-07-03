@@ -233,7 +233,7 @@ export function DatePicker({ placeholder, setDate, value }) {
                   >
                     <div
                       onClick={setDateValue(d)}
-                      className={`cursor-pointer text-center text-sm leading-none rounded-full leading-loose transition ease-in-out duration-100 ${
+                      className={`cursor-pointer text-center text-sm rounded-full leading-loose transition ease-in-out duration-100 ${
                         isToday(d)
                           ? "bg-blue-500 text-white"
                           : "text-gray-700 hover:bg-blue-200"
