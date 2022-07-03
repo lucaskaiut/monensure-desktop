@@ -130,13 +130,13 @@ export function DatePicker({ placeholder, setDate, value }) {
         onClick={toggleDatepicker}
       >
         <div>
-          <p className="text-sm text-zinc-400">{placeholder}</p>
+          <p className="text-sm text-zinc-500">{placeholder}</p>
         </div>
         <div>
           <input
             type="text"
             readOnly
-            className="w-24 leading-none focus:outline-none text-zinc-400 bg-ice"
+            className="w-24 leading-none focus:outline-none text-zinc-500 bg-ice"
             placeholder={placeholder}
             value={format(selectedDate, "dd/MM/yyyy", { locale: ptBR })}
           />
