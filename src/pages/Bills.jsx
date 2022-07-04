@@ -72,7 +72,7 @@ export function Bills () {
 
         params += `page=${page}`;
 
-        params += `&filter[is_paid]=${isPaidFilter}`;
+        params += `&filter[is_paid]=${isPaidFilter ? 1 : 0}`;
 
         if (startDueDateFilter != null) {
             params += `&filter[due_after]=${format(startDueDateFilter, 'yyyy-MM-dd')}`;
@@ -222,6 +222,7 @@ export function Bills () {
                         setIsPaidFilter={setIsPaidFilter}
                         selectedBills={selectedBills}
                         toggleModal={() => toggleModal()}
+                        setSelectedBills={setSelectedBills}
                     />
                 </div>
                 <div id="scrollableBills" className="w-full sm:mt-8 m-1 flex flex-col min-h-[550px] max-h-[550px] overflow-y-auto">
@@ -277,6 +278,7 @@ export function Bills () {
                     setIsPaidFilter={setIsPaidFilter}
                     selectedBills={selectedBills}
                     toggleModal={() => toggleModal()}
+                    setSelectedBills={setSelectedBills}
                 />
             </div>
         </div>

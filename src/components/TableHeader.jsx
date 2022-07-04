@@ -12,6 +12,8 @@ import Select from "@mui/material/Select";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Drawer from "@mui/material/Drawer";
+import api from "../api";
+import toast from "react-hot-toast";
 
 export function TableHeader({
   startDueDateFilter,
@@ -19,6 +21,7 @@ export function TableHeader({
   sortOrder,
   isPaidFilter,
   selectedBills,
+  setSelectedBills,
   setStartDueDateFilter,
   setEndDueDateFilter,
   setSortOrder,
@@ -40,8 +43,20 @@ export function TableHeader({
     toggleModal();
   }
 
-  function paySelectedBills() {
-    console.log(selectedBills);
+  async function paySelectedBills() {
+    try {
+      await api.put('/bill/pay-bills', {
+        bills: selectedBills
+      });
+
+      setSelectedBills([]);
+
+      fetchData();
+      
+      toast.success('Contas pagas com sucesso');
+    } catch ({ response }) {
+      toast.error(response.data.message);
+    }
   }
 
   return (
@@ -123,7 +138,7 @@ export function TableHeader({
         </button>
         <button
           className="text-zinc-100 rounded-sm p-2"
-          onClick={() => toggleDrawer()}
+          onClick={() => paySelectedBills()}
         >
           <CurrencyDollar size={36} />
         </button>
