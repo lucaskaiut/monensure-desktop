@@ -148,6 +148,7 @@ export function BillForm({ onSubmit, errors, bill }) {
           "placeholder-danger-500": errors["amount"],
         })}
         type="text"
+        inputMode="numeric"
         value={maskedAmount}
         onChange={(event) => handleAmountChange(event.target.value)}
         placeholder="Preço"
