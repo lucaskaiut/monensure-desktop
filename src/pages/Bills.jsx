@@ -122,16 +122,17 @@ export function Bills () {
     }
 
 
-    function handleCreateBill (billData) {
+    async function handleCreateBill (billData) {
         const { errors, hasError } = validateData(billData, formValidation);
 
         setFormErrors(errors);
 
         if (!hasError) {
-            api.post('/bill', { ...billData }).then(() => {
-                loadData();
-                toggleModal();
-            });
+            await api.post('/bill', { ...billData });
+            
+            fetchData();
+            
+            toggleModal();
         }
     }
 

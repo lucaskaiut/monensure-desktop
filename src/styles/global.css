@@ -17,3 +17,7 @@ body {
         scrollbar-width: none;  /* Firefox */
     }
 }
+
+.select__control {
+    @apply h-[66px] pl-4
+}

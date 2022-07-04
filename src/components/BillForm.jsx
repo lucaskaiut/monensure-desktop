@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import api from "../api";
 import { reverseString } from "../utils";
 import { DatePicker } from "./DatePicker";
+import CreatableSelect from 'react-select/creatable';
 
 export function BillForm({ onSubmit, errors, bill }) {
   const [categories, setCategories] = useState([]);
@@ -18,16 +19,29 @@ export function BillForm({ onSubmit, errors, bill }) {
   const [type, setType] = useState("");
   const [category, setCategory] = useState("");
   const [supplier, setSupplier] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    api.get("/supplier?per_page=100").then(({ data }) => {
-      setSuppliers(data.data);
-    });
+    setIsLoading(true);
 
-    api.get("/category?per_page=100").then(({ data }) => {
-      setCategories(data.data);
-    });
+    fetchCategories();
+
+    fetchSuppliers();
+
+    setIsLoading(false);
   }, []);
+
+  async function fetchSuppliers () {
+    const { data } = await api.get("/supplier?per_page=100");
+
+    setSuppliers(data.data);
+  }
+
+  async function fetchCategories () {
+    const { data } = await api.get("/category?per_page=100");
+
+    setCategories(data.data);
+  }
 
   function setBillType(billType) {
     setType(billType);
@@ -35,6 +49,8 @@ export function BillForm({ onSubmit, errors, bill }) {
 
   function handleSubmit(event) {
     event.preventDefault();
+
+    setIsLoading(true);
 
     let billData = {
       description,
@@ -50,6 +66,36 @@ export function BillForm({ onSubmit, errors, bill }) {
     };
 
     onSubmit(billData);
+
+    setIsLoading(false);
+  }
+
+  async function handleCreateCategory(value) {
+    setIsLoading(true);
+
+    const { data } = await api.post('/category', { name: value });
+
+    const category = data.data;
+
+    setCategory(category.id)
+
+    fetchCategories();
+
+    setIsLoading(false);
+  }
+
+  async function handleCreateSupplier(value) {
+    setIsLoading(true);
+
+    const { data } = await api.post('/supplier', { name: value });
+
+    const supplier = data.data;
+
+    setSupplier(supplier.id)
+
+    fetchSuppliers();
+
+    setIsLoading(false);
   }
 
   function handleAmountChange(value) {
@@ -149,48 +195,26 @@ export function BillForm({ onSubmit, errors, bill }) {
           Saída
         </button>
       </div>
-      <select
-        className={classNames(
-          "form-select text-zinc-500 bg-ice appearance-none rounded-md py-5 pl-6 w-full placeholder-zinc-500 border",
-          {
-            "border-zinc-300": !errors["category_id"],
-            "border-danger-500": errors["category_id"],
-          }
-        )}
-        type="text"
-        onChange={(event) => setCategory(event.target.value)}
-        value={bill !== null ? bill.category.id : category}
-      >
-        <option value="">Categoria</option>
-        {categories.map((category) => {
-          return (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          );
-        })}
-      </select>
-      <select
-        className={classNames(
-          "form-select text-zinc-500 bg-ice appearance-none rounded-md py-5 pl-6 w-full placeholder-zinc-500 border",
-          {
-            "border-zinc-300": !errors["supplier_id"],
-            "border-danger-500": errors["supplier_id"],
-          }
-        )}
-        type="text"
-        onChange={(event) => setSupplier(event.target.value)}
-        value={bill !== null ? bill.supplier.id : supplier}
-      >
-        <option value="">Fornecedor</option>
-        {suppliers.map((supplier) => {
-          return (
-            <option key={supplier.id} value={supplier.id}>
-              {supplier.name}
-            </option>
-          );
-        })}
-      </select>
+      <CreatableSelect 
+        isClearable
+        options={categories}
+        onCreateOption={handleCreateCategory}
+        isLoading={isLoading}
+        onChange={category => setCategory(category.id)}
+        className="w-full"
+        classNamePrefix="select"
+        placeholder="Categoria"
+      />
+      <CreatableSelect 
+        isClearable
+        options={suppliers}
+        onCreateOption={handleCreateSupplier}
+        isLoading={isLoading}
+        onChange={supplier => setSupplier(supplier.id)}
+        className="w-full"
+        classNamePrefix="select"
+        placeholder="Fornecedor"
+      />
       <button
         className="text-white font-bold text-base bg-green-500 py-3 w-full rounded-md hover:bg-green-900 transition-colors"
         type="submit"

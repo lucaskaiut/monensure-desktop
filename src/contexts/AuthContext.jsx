@@ -69,7 +69,9 @@ export function AuthContextProvider ({ children }) {
         api.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
 
         try {
-            api.post('/user/me');
+            const { data } = await api.post('/user/me');
+
+            setUser(data.data);
 
             setIsUserLogged(true);
         } catch (error) {
