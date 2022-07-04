@@ -52,6 +52,8 @@ export function AuthContextProvider ({ children }) {
     async function logout () {
         localStorage.removeItem('access_token');
 
+        api.defaults.headers.common['Authorization'] = null;
+
         setUser(null);
 
         setIsUserLogged(false);
