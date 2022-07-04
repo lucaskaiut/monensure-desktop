@@ -32,9 +32,9 @@ export function Bills () {
 
             setBills(data.data);
 
-            setTotalReceive(0);
+            setTotalReceive(data.additional.totalReceive);
 
-            setTotalPay(data.additional.total);
+            setTotalPay(data.additional.totalPay);
         }
 
         setData();
@@ -46,9 +46,9 @@ export function Bills () {
 
         setBills(data.data);
 
-        setTotalReceive(0);
+        setTotalReceive(data.additional.totalReceive);
 
-        setTotalPay(data.additional.total);
+        setTotalPay(data.additional.totalPay);
     }
 
     async function fetchMoreData () {
@@ -56,9 +56,9 @@ export function Bills () {
 
         setBills([...bills, ...data.data]);
 
-        setTotalReceive(0);
+        setTotalReceive(data.additional.totalReceive);
 
-        setTotalPay(data.additional.total);
+        setTotalPay(data.additional.totalPay);
 
         setCurrentPage((currentPage) => currentPage + 1);
 
@@ -237,7 +237,7 @@ export function Bills () {
                             return <TableRow 
                                 key={bill.id}
                                 id={bill.id} 
-                                variant='pay' 
+                                variant={bill.type}
                                 isPaid={bill.is_paid} 
                                 supplier={bill.supplier.name} 
                                 dueAt={bill.due_at} 
