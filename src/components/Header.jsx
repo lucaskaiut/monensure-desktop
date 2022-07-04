@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 export function Header() {
   const [isDropDownVisible, setIsDropdownvisible] = useState(false);
 
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   const navigate = useNavigate();
 
@@ -27,11 +27,10 @@ export function Header() {
       <Logo />
       <button className="flex items-center gap-2" onClick={toggleDropdown}>
         <div className="text-right">
-          <p className="text-bold">Lucas Kaiut</p>
-          <p className="text-sm">Família</p>
+          <p className="text-bold">{ `${user.firstname} ${user.lastname}` }</p>
         </div>
         <img
-          src="https://github.com/lucaskaiut.png"
+          src={ user.photo ?? 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541'}
           alt=""
           className="rounded-full w-14"
         />
