@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { useState } from "react";
 import { Logo } from "../components/Logo";
 import { useAuth } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Login () {
     const [email, setEmail] = useState('');
@@ -31,7 +31,7 @@ export function Login () {
                 <Logo />
                 <p className="font-thin text-2xl">Tenha o controle da sua vida financeira</p>
             </div>
-            <div className="h-[100vh] flex-[2] flex flex-col justify-center items-center">
+            <div className="h-[100vh] flex-[2] flex flex-col justify-center items-center px-3">
                 <h1 className="text-zinc-500 text-2xl">
                     Acesse sua conta
                 </h1>
@@ -40,7 +40,7 @@ export function Login () {
                     onSubmit={handleLoginSubmit}    
                 >
                     <input
-                        className={classNames("bg-ice rounded-md py-4 px-4 w-4/12 border text-zinc-500", {
+                        className={classNames("bg-ice rounded-md py-4 px-4 sm:w-4/12 w-full border text-zinc-500", {
                             "border-zinc-300": true,
                             "placeholder-zinc-400": true,
                             "border-danger-500": false,
@@ -51,7 +51,7 @@ export function Login () {
                         onChange={event => setEmail(event.target.value)}
                     />
                     <input
-                        className={classNames("bg-ice rounded-md py-4 px-4 w-4/12 border text-zinc-500", {
+                        className={classNames("bg-ice rounded-md py-4 px-4 sm:w-4/12 w-full border text-zinc-500", {
                             "border-zinc-300": true,
                             "placeholder-zinc-400": true,
                             "border-danger-500": false,
@@ -63,10 +63,10 @@ export function Login () {
                     />
                     <div className="flex gap-6">
                         <a href="#" className="text-zinc-400 hover:text-zinc-600 transition-colors">Esqueci minha senha</a>
-                        <a href="#" className="text-zinc-900 hover:text-black transition-colors">Criar conta</a>
+                        <Link to="/register" className="text-zinc-900 hover:text-black transition-colors">Criar conta</Link>
                     </div>
                     <button
-                        className="bg-green-500 hover:bg-green-900 transition-colors rounded-md py-4 px-4 w-4/12"
+                        className="bg-green-500 hover:bg-green-900 transition-colors rounded-md py-4 px-4 sm:w-4/12 w-full"
                         type="submit"
                     >
                         Login

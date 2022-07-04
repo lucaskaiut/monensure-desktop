@@ -2,10 +2,17 @@ const rules = {
     required: (data, field) => required(data, field),
     numeric: (data, field) => numeric(data, field),
     date: (data, field) => date(data, field),
+    confirmed: (data, field) => confirmed(data, field),
 }
 
 function required(data, field) {
     return data[field] !== undefined && data[field] !== '';
+}
+
+function confirmed(data, field) {
+    const fieldConfirmation = `${field}_confirmation`;
+
+    return data[fieldConfirmation] !== undefined && data[fieldConfirmation] !== '' && data[field] === data[fieldConfirmation];
 }
 
 function numeric(data, field) {
@@ -18,8 +25,6 @@ function date(data, field) {
 
 export function validateData(data, validationRules) {
     const validationKeys = Object.keys(validationRules);
-
-    console.log(data);
 
     let errors = [];
 

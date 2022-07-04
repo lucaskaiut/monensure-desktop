@@ -5,7 +5,8 @@ import api from '../api';
 const DEFAULT_VALUE = { 
     user: {},
     login: (email, password) => {},
-    isUserLogged: false
+    isUserLogged: false,
+    register: (data) => {},
 }
 
 export const AuthContext = createContext(DEFAULT_VALUE);
@@ -18,6 +19,10 @@ export function AuthContextProvider ({ children }) {
     useEffect(() => {
         me();
     }, []);
+
+    async function register(data) {
+        await api.post('/user/register', data);
+    }
 
     async function login (email, password) {
         try {
@@ -76,7 +81,8 @@ export function AuthContextProvider ({ children }) {
         user,
         isUserLogged,
         login,
-        logout
+        logout,
+        register
     }
 
     return (
