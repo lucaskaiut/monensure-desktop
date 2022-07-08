@@ -152,8 +152,8 @@ export function Bills () {
         }
     }
 
-    function onRowClick(billId) {
-        
+    function onSelect(billId) {
+        selectBill(billId);
     }
 
     function toggleModal (bill = null) {
@@ -162,36 +162,10 @@ export function Bills () {
         setIsModalOpen(!isModalOpen);
     }
 
-    function handleSelectedBill (billId) {
-        const prevSelected = selectedBills;
-
-        if (prevSelected.length > 0) {
-            let newSelected = [];
-
-            if (prevSelected.includes(billId)) {
-                newSelected = prevSelected.filter((id) => {
-                    return id != billId;
-                });
-            } else {
-                newSelected = [...prevSelected, billId];
-            }
-    
-            setSelectedBills(newSelected);
-        } else {
-            const bill = bills.filter(value => {
-                return value.id === billId;
-            });
-
-            toggleModal(bill[0]);
-        }
-    }
-
-    const onLongPress = (data) => {
-        const { billId } = data;
-
-        const prevSelected = selectedBills;
-
+    function selectBill(billId) {
         let newSelected = [];
+
+        const prevSelected = selectedBills;
 
         if (prevSelected.includes(billId)) {
             newSelected = prevSelected.filter((id) => {
@@ -202,20 +176,21 @@ export function Bills () {
         }
 
         setSelectedBills(newSelected);
-    };
-
-    const onClick = (data) => {
-        const { billId } = data;
-
-        handleSelectedBill(billId);
     }
 
-    const defaultOptions = {
-        shouldPreventDefault: true,
-        delay: 400,
-    };
+    function onRowClick (billId) {
+        const prevSelected = selectedBills;
 
-    const longPressEvent = useLongPress(onLongPress, onClick, defaultOptions);
+        if (prevSelected.length > 0) {
+            selectBill(billId);
+        } else {
+            const bill = bills.filter(value => {
+                return value.id === billId;
+            });
+
+            toggleModal(bill[0]);
+        }
+    }
 
     return (
         <div className="flex flex-col w-full px-2 2xl:px-52 xl:px-32 md:mt-10 mt-1">
@@ -260,9 +235,9 @@ export function Bills () {
                                 description={bill.description} 
                                 category={bill.category}
                                 amount={bill.amount}
+                                onSelect={onSelect}
                                 onRowClick={onRowClick}
                                 isSelected={selectedBills.includes(bill.id)}
-                                longPress={longPressEvent}
                             />
                         }) }
                     </InfiniteScroll>
