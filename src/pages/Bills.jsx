@@ -273,7 +273,7 @@ export function Bills () {
                 onClose={toggleModal}
                 className="flex justify-center items-center max-w-full"
             >
-                <div className="relative bg-white text-zinc-600 max-w-full sm:min-w-[36rem] min-h-[46.25rem] rounded-lg py-16 px-4 sm:px-12">
+                <div className="relative bg-white text-zinc-600 max-w-full sm:min-w-[36rem] sm:min-h-[46.25rem] rounded-lg py-16 px-4 sm:px-12">
                     <X className="top-3 right-3 absolute" onClick={toggleModal} />
                     <h1 className="text-2xl">Cadastrar nova transação</h1>
                     <BillForm onSubmit={handleSubmit} errors={formErrors} bill={selectedBill}/>

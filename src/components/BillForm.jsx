@@ -145,7 +145,7 @@ export function BillForm({ onSubmit, errors, bill }) {
       onSubmit={handleSubmit}
     >
       <input
-        className={classNames("bg-ice rounded-md py-5 pl-6 w-full border", {
+        className={classNames("bg-ice rounded-md sm:py-5 py-3 pl-6 w-full border", {
           "border-zinc-300": !errors["description"],
           "placeholder-zinc-500": !errors["description"],
           "border-danger-500": errors["description"],
@@ -157,7 +157,7 @@ export function BillForm({ onSubmit, errors, bill }) {
         placeholder="Descrição"
       />
       <input
-        className={classNames("bg-ice rounded-md py-5 pl-6 w-full border", {
+        className={classNames("bg-ice rounded-md sm:py-5 py-3 pl-6 w-full border", {
           "border-zinc-300": !errors["amount"],
           "placeholder-zinc-500": !errors["amount"],
           "border-danger-500": errors["amount"],
@@ -181,10 +181,10 @@ export function BillForm({ onSubmit, errors, bill }) {
           value={due} 
         />
       </div>
-      <div className="flex gap-2 sm:flex-row flex-col">
+      <div className="flex gap-2 flex-row">
         <button
           className={classNames(
-            "w-[17rem] max-w-[17rem] justify-center py-5 gap-7 flex-1 flex bg-ice rounded-md placeholder-zinc-500 border",
+            "w-[17rem] sm:max-w-[17rem] max-w-[134px] justify-center sm:py-5 py-3 gap-7 flex-1 flex bg-ice rounded-md placeholder-zinc-500 border",
             {
               "bg-green-300 bg-opacity-30": type == "receive",
               "border-zinc-300": !errors["type"],
@@ -200,7 +200,7 @@ export function BillForm({ onSubmit, errors, bill }) {
 
         <button
           className={classNames(
-            "w-[17rem] max-w-[17rem] justify-center py-5 gap-7 flex-1 flex bg-ice rounded-md placeholder-zinc-500 border",
+            "w-[17rem] sm:max-w-[17rem] max-w-[134px] justify-center sm:py-5 py-3 gap-7 flex-1 flex bg-ice rounded-md placeholder-zinc-500 border",
             {
               "bg-danger-500 bg-opacity-30": type == "pay",
               "border-zinc-300": !errors["type"],

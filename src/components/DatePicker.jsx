@@ -129,7 +129,7 @@ export function DatePicker({ placeholder, setDate, value }) {
   }, [datepickerHeaderDate]);
 
   return (
-    <div className="w-[17rem]   relative bg-ice border border-zinc-300 py-5 gap-2 flex justify-center items-center rounded-md">
+    <div className="w-[17rem]   relative bg-ice border border-zinc-300 sm:py-5 py-3 gap-2 flex justify-center items-center rounded-md">
       <input type="hidden" name="date" />
       <div
         className="gap-2 flex justify-center items-center cursor-pointer"

@@ -19,5 +19,5 @@ body {
 }
 
 .select__control {
-    @apply h-[66px] pl-4
+    @apply sm:h-[66px] h-[50px] pl-4
 }
