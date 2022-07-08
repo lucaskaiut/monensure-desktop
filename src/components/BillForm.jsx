@@ -14,15 +14,31 @@ export function BillForm({ onSubmit, errors, bill }) {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [maskedAmount, setMaskedAmount] = useState("");
-  const [reference, setReference] = useState(new Date());
-  const [due, setDue] = useState(new Date());
+  const [reference, setReference] = useState(null);
+  const [due, setDue] = useState(null);
   const [type, setType] = useState("");
-  const [category, setCategory] = useState("");
-  const [supplier, setSupplier] = useState("");
+  const [category, setCategory] = useState(null);
+  const [supplier, setSupplier] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
+
+    if (bill) {
+      setDescription(bill.description);
+
+      setDue(new Date(bill.due_at));
+
+      setReference(new Date(bill.reference_at));
+
+      setType(bill.type);
+
+      setSupplier(bill.supplier);
+      
+      setCategory(bill.category);
+
+      handleAmountChange(bill.amount.toFixed(2));
+    }
 
     fetchCategories();
 
@@ -59,8 +75,8 @@ export function BillForm({ onSubmit, errors, bill }) {
       due_at: format(due, "yyyy-MM-dd", { locale: ptBR }),
       original_due_at: format(due, "yyyy-MM-dd", { locale: ptBR }),
       type,
-      category_id: category,
-      supplier_id: supplier,
+      category_id: category.id,
+      supplier_id: supplier.id,
       is_paid: false,
       is_credit_card: false,
     };
@@ -136,7 +152,7 @@ export function BillForm({ onSubmit, errors, bill }) {
           "placeholder-danger-500": errors["description"],
         })}
         type="text"
-        value={bill ? bill.description : description}
+        value={description}
         onChange={(event) => setDescription(event.target.value)}
         placeholder="Descrição"
       />
@@ -159,7 +175,11 @@ export function BillForm({ onSubmit, errors, bill }) {
           setDate={setReference}
           value={reference}
         />
-        <DatePicker placeholder="Vencimento" setDate={setDue} value={due} />
+        <DatePicker 
+          placeholder="Vencimento" 
+          setDate={setDue} 
+          value={due} 
+        />
       </div>
       <div className="flex gap-2 sm:flex-row flex-col">
         <button
@@ -172,7 +192,6 @@ export function BillForm({ onSubmit, errors, bill }) {
             }
           )}
           type="button"
-          placeholder="Refêrencia"
           onClick={() => setBillType("receive")}
         >
           <ArrowCircleUp color="#33cc95" size={24} />
@@ -189,7 +208,6 @@ export function BillForm({ onSubmit, errors, bill }) {
             }
           )}
           type="button"
-          placeholder="Refêrencia"
           onClick={() => setBillType("pay")}
         >
           <ArrowCircleDown color="#e52e4d" size={24} />
@@ -201,7 +219,8 @@ export function BillForm({ onSubmit, errors, bill }) {
         options={categories}
         onCreateOption={handleCreateCategory}
         isLoading={isLoading}
-        onChange={category => setCategory(category.id)}
+        onChange={setCategory}
+        value={category}
         className="w-full"
         classNamePrefix="select"
         placeholder="Categoria"
@@ -211,7 +230,8 @@ export function BillForm({ onSubmit, errors, bill }) {
         options={suppliers}
         onCreateOption={handleCreateSupplier}
         isLoading={isLoading}
-        onChange={supplier => setSupplier(supplier.id)}
+        onChange={setSupplier}
+        value={supplier}
         className="w-full"
         classNamePrefix="select"
         placeholder="Fornecedor"

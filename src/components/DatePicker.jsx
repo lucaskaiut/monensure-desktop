@@ -17,8 +17,14 @@ export function DatePicker({ placeholder, setDate, value }) {
   const [blankDays, setBlankDays] = useState([]);
   const [showDatepicker, setShowDatepicker] = useState(false);
   const [datepickerHeaderDate, setDatepickerHeaderDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(value);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [type, setType] = useState("date");
+
+  useEffect(() => {
+    if (value) {
+      setSelectedDate(value);
+    }
+  }, [value]);
 
   const decrement = () => {
     switch (type) {

@@ -10,6 +10,7 @@ import api from '../api';
 import { format } from "date-fns";
 import useLongPress from "../hooks/useLongPress";
 import { TableHeader } from "../components/TableHeader";
+import toast from "react-hot-toast";
 
 export function Bills () {
     const [bills, setBills] = useState([]);
@@ -122,17 +123,32 @@ export function Bills () {
     }
 
 
-    async function handleCreateBill (billData) {
+    async function handleSubmit (billData) {
         const { errors, hasError } = validateData(billData, formValidation);
 
         setFormErrors(errors);
 
         if (!hasError) {
-            await api.post('/bill', { ...billData });
-            
-            fetchData();
-            
-            toggleModal();
+            try {
+                let message = '';
+                if (selectedBill) {
+                    await api.put(`/bill/${selectedBill.id}`, { ...billData });
+
+                    message = 'Registro alterado com sucesso';
+                } else {
+                    await api.post('/bill', { ...billData });
+
+                    message = 'Registro criado com sucesso';
+                }
+                
+                fetchData();
+                
+                toggleModal();
+
+                toast.success(message);
+            } catch (error) {
+                toast.error('Algo deu errado. Por favor, revise os dados e tente novamente.');
+            }
         }
     }
 
@@ -260,7 +276,7 @@ export function Bills () {
                 <div className="relative bg-white text-zinc-600 max-w-full sm:min-w-[36rem] min-h-[46.25rem] rounded-lg py-16 px-4 sm:px-12">
                     <X className="top-3 right-3 absolute" onClick={toggleModal} />
                     <h1 className="text-2xl">Cadastrar nova transação</h1>
-                    <BillForm onSubmit={handleCreateBill} errors={formErrors} bill={selectedBill}/>
+                    <BillForm onSubmit={handleSubmit} errors={formErrors} bill={selectedBill}/>
                 </div>
             </Modal>
             <div
