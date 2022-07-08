@@ -2,6 +2,7 @@ import classNames from "classnames";
 import NumberFormat from "react-number-format";
 import { format } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
+import { useEffect } from "react";
 
 export function TableRow({
   id,
@@ -16,8 +17,11 @@ export function TableRow({
   isSelected,
   longPress,
 }) {
-  const { onMouseDown, onTouchStart, onMouseUp, onMouseLeave, onTouchEnd } =
-    longPress;
+  const { onMouseDown, onTouchStart, onMouseUp, onMouseLeave, onTouchEnd } = longPress;
+
+  useEffect(() => {
+    console.log();
+  }, []);
 
   return (
     <div
@@ -40,7 +44,7 @@ export function TableRow({
             <p className="text-sm">{description}</p>
           </div>
           <p className="md:text-base text-xs text-zinc-400 sm:text-zinc-900">
-            {format(new Date(dueAt), "dd/MM/yyyy", {
+            {format(new Date(`${dueAt}T00:00:00`), "dd/MM/yyyy", {
               locale: ptBR,
             })}
           </p>

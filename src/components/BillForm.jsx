@@ -27,9 +27,9 @@ export function BillForm({ onSubmit, errors, bill }) {
     if (bill) {
       setDescription(bill.description);
 
-      setDue(new Date(bill.due_at));
+      setDue(new Date(`${bill.due_at}T00:00:00`));
 
-      setReference(new Date(bill.reference_at));
+      setReference(new Date(`${bill.reference_at}T00:00:00`));
 
       setType(bill.type);
 
