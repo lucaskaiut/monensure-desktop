@@ -35,10 +35,6 @@ export function TableHeader({
     setDrawer(!drawer);
   }
 
-  useEffect(() => {
-    fetchData();
-  }, [startDueDateFilter, endDueDateFilter, sortOrder, isPaidFilter]);
-
   function handleNewTransactionClick() {
     toggleModal();
   }
@@ -89,22 +85,6 @@ export function TableHeader({
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
-        <div className="w-56">
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Ordenar</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={sortOrder}
-              label="Ordenar"
-              onChange={(event) => setSortOrder(event.target.value)}
-            >
-              <MenuItem value="">Selecione</MenuItem>
-              <MenuItem value="supplier">Fornecedor</MenuItem>
-              <MenuItem value="due_at">Vencimento</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
         <FormControlLabel
           control={<Checkbox checked={isPaidFilter} />}
           label="Pago"
@@ -124,6 +104,13 @@ export function TableHeader({
             Pagar
           </button>
         </Animated>
+        <button
+          className="bg-green-500 sm:text-base text-sm sm:py-3 sm:px-8 py-3 px-3 rounded-md hover:bg-green-900 transition-colors"
+          onClick={fetchData}
+        >
+          <p className="xl:block hidden">Filtrar</p>
+          <Plus size={24} className="xl:hidden block" />
+        </button>
       </div>
 
       <div className="md:hidden flex justify-between items-center px-10 bg-green-500">

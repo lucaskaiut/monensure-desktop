@@ -8,7 +8,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { X } from "phosphor-react";
 import api from '../api';
 import { format } from "date-fns";
-import useLongPress from "../hooks/useLongPress";
 import { TableHeader } from "../components/TableHeader";
 import toast from "react-hot-toast";
 
@@ -26,21 +25,6 @@ export function Bills () {
     const [endDueDateFilter, setEndDueDateFilter] = useState(null);
     const [sortOrder, setSortOrder] = useState(null);
     const [isPaidFilter, setIsPaidFilter] = useState(false);
-
-    useEffect(() => {
-        async function setData() {
-            const data = await loadData();
-
-            setBills(data.data);
-
-            setTotalReceive(data.additional.totalReceive);
-
-            setTotalPay(data.additional.totalPay);
-        }
-
-        setData();
-        
-    }, []);
 
     async function fetchData() {
         const data = await loadData();
@@ -191,6 +175,28 @@ export function Bills () {
             toggleModal(bill[0]);
         }
     }
+
+    useEffect(() => {
+        async function setData() {
+            const data = await loadData();
+
+            setBills(data.data);
+
+            setTotalReceive(data.additional.totalReceive);
+
+            setTotalPay(data.additional.totalPay);
+        }
+        
+        if (!startDueDateFilter && !endDueDateFilter) {
+            const now = new Date();
+
+            setStartDueDateFilter(new Date(now.getFullYear(), now.getMonth(), 1));
+
+            setEndDueDateFilter(new Date(now.getFullYear(), now.getMonth() + 1, 0));
+        }
+
+        setData();
+    }, []);
 
     return (
         <div className="flex flex-col w-full px-2 2xl:px-52 xl:px-32 md:mt-10 mt-1">
