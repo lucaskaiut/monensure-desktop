@@ -48,11 +48,17 @@ export function TableHeader({
       setSelectedBills([]);
 
       fetchData();
-      
+
       toast.success('Contas pagas com sucesso');
     } catch ({ response }) {
       toast.error(response.data.message);
     }
+  }
+
+  function handleFilter() {
+    fetchData();
+
+    toggleDrawer();
   }
 
   return (
@@ -109,7 +115,6 @@ export function TableHeader({
           onClick={fetchData}
         >
           <p className="xl:block hidden">Filtrar</p>
-          <Plus size={24} className="xl:hidden block" />
         </button>
       </div>
 
@@ -173,6 +178,12 @@ export function TableHeader({
               onChange={(event) => setIsPaidFilter(event.target.checked)}
               className="text-black"
             />
+            <button
+              className="bg-green-500 sm:text-base text-white text-sm sm:py-3 sm:px-8 py-3 px-3 rounded-md hover:bg-green-900 transition-colors"
+              onClick={handleFilter}
+            >
+              <p className="xl:hidden block">Filtrar</p>
+            </button>
           </div>
         </Drawer>
       </div>

@@ -20,6 +20,8 @@ export function BillForm({ onSubmit, errors, bill }) {
   const [category, setCategory] = useState(null);
   const [supplier, setSupplier] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [installments, setInstallments] = useState(null);
+  const [hasInstallments, setHasInstallments] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
@@ -34,7 +36,7 @@ export function BillForm({ onSubmit, errors, bill }) {
       setType(bill.type);
 
       setSupplier(bill.supplier);
-      
+
       setCategory(bill.category);
 
       handleAmountChange(bill.amount.toFixed(2));
@@ -47,13 +49,13 @@ export function BillForm({ onSubmit, errors, bill }) {
     setIsLoading(false);
   }, []);
 
-  async function fetchSuppliers () {
+  async function fetchSuppliers() {
     const { data } = await api.get("/supplier?per_page=100");
 
     setSuppliers(data.data);
   }
 
-  async function fetchCategories () {
+  async function fetchCategories() {
     const { data } = await api.get("/category?per_page=100");
 
     setCategories(data.data);
@@ -79,6 +81,7 @@ export function BillForm({ onSubmit, errors, bill }) {
       supplier_id: supplier.id,
       is_paid: false,
       is_credit_card: false,
+      installments: hasInstallments ? installments : null,
     };
 
     onSubmit(billData);
@@ -121,7 +124,7 @@ export function BillForm({ onSubmit, errors, bill }) {
 
     let result = "";
 
-    for (var x = 0, y = 0; x < mask.length && y < maskedValue.length; ) {
+    for (var x = 0, y = 0; x < mask.length && y < maskedValue.length;) {
       if (mask.charAt(x) != "#") {
         result += mask.charAt(x);
         x++;
@@ -175,10 +178,10 @@ export function BillForm({ onSubmit, errors, bill }) {
           setDate={setReference}
           value={reference}
         />
-        <DatePicker 
-          placeholder="Vencimento" 
-          setDate={setDue} 
-          value={due} 
+        <DatePicker
+          placeholder="Vencimento"
+          setDate={setDue}
+          value={due}
         />
       </div>
       <div className="flex gap-2 flex-row">
@@ -214,7 +217,7 @@ export function BillForm({ onSubmit, errors, bill }) {
           Saída
         </button>
       </div>
-      <CreatableSelect 
+      <CreatableSelect
         isClearable
         options={categories}
         onCreateOption={handleCreateCategory}
@@ -225,7 +228,7 @@ export function BillForm({ onSubmit, errors, bill }) {
         classNamePrefix="select"
         placeholder="Categoria"
       />
-      <CreatableSelect 
+      <CreatableSelect
         isClearable
         options={suppliers}
         onCreateOption={handleCreateSupplier}
@@ -236,6 +239,33 @@ export function BillForm({ onSubmit, errors, bill }) {
         classNamePrefix="select"
         placeholder="Fornecedor"
       />
+      <div className="py-2 w-full flex align-center justify-between">
+        <div className="flex items-center w-full">
+          <label for="default-toggle" className="inline-flex relative items-center cursor-pointer">
+            <input type="checkbox" id="default-toggle" className="sr-only peer" defaultChecked={hasInstallments} onChange={() => setHasInstallments(!hasInstallments)} />
+            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            <span className="ml-3 text-sm font-medium">Tem parcelas?</span>
+          </label>
+        </div>
+        <div className="flex w-full">
+          {hasInstallments && (
+            <input
+              className={classNames("bg-ice rounded-md sm:py-5 py-3 pl-6 border", {
+                "border-zinc-300": !errors["description"],
+                "placeholder-zinc-500": !errors["description"],
+                "border-danger-500": errors["description"],
+                "placeholder-danger-500": errors["description"],
+              })}
+              type="number"
+              min="0"
+              step="1"
+              value={installments}
+              onChange={(event) => setInstallments(event.target.value)}
+              placeholder="Parcelas"
+            />
+          )}
+        </div>
+      </div>
       <button
         className="text-white font-bold text-base bg-green-500 py-3 w-full rounded-md hover:bg-green-900 transition-colors"
         type="submit"
