@@ -12,6 +12,8 @@ import { TableHeader } from "../components/TableHeader";
 import toast from "react-hot-toast";
 
 export function Bills () {
+    const now = new Date();
+
     const [bills, setBills] = useState([]);
     const [totalPay, setTotalPay] = useState(0);
     const [totalReceive, setTotalReceive] = useState(0);
@@ -21,8 +23,8 @@ export function Bills () {
     const [hasMore, setHasMore] = useState(true);
     const [selectedBills, setSelectedBills] = useState([]);
     const [selectedBill, setSelectedBill] = useState(null);
-    const [startDueDateFilter, setStartDueDateFilter] = useState(null);
-    const [endDueDateFilter, setEndDueDateFilter] = useState(null);
+    const [startDueDateFilter, setStartDueDateFilter] = useState(new Date(now.getFullYear(), now.getMonth(), 1));
+    const [endDueDateFilter, setEndDueDateFilter] = useState(new Date(now.getFullYear(), now.getMonth() + 1, 0));
     const [sortOrder, setSortOrder] = useState(null);
     const [isPaidFilter, setIsPaidFilter] = useState(false);
     const [totalBills, setTotalBills] = useState(0);
@@ -198,14 +200,6 @@ export function Bills () {
             setTotalReceive(data.additional.totalReceive);
 
             setTotalPay(data.additional.totalPay);
-        }
-        
-        if (!startDueDateFilter && !endDueDateFilter) {
-            const now = new Date();
-
-            setStartDueDateFilter(new Date(now.getFullYear(), now.getMonth(), 1));
-
-            setEndDueDateFilter(new Date(now.getFullYear(), now.getMonth() + 1, 0));
         }
 
         setData();
