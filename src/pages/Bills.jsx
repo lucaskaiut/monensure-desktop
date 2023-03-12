@@ -25,7 +25,7 @@ export function Bills () {
     const [selectedBill, setSelectedBill] = useState(null);
     const [startDueDateFilter, setStartDueDateFilter] = useState(new Date(now.getFullYear(), now.getMonth(), 1));
     const [endDueDateFilter, setEndDueDateFilter] = useState(new Date(now.getFullYear(), now.getMonth() + 1, 0));
-    const [sortOrder, setSortOrder] = useState(null);
+    const [sortOrder, setSortOrder] = useState('');
     const [isPaidFilter, setIsPaidFilter] = useState(false);
     const [totalBills, setTotalBills] = useState(0);
 
