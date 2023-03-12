@@ -96,7 +96,7 @@ export function BillForm({ onSubmit, errors, bill }) {
 
     const category = data.data;
 
-    setCategory(category.id)
+    setCategory(category)
 
     fetchCategories();
 

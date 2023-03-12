@@ -1,10 +1,6 @@
 import { CurrencyDollar, Faders, Funnel, Plus } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { Animated } from "react-animated-css";
-import TextField from "@mui/material/TextField";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -14,8 +10,8 @@ import Checkbox from "@mui/material/Checkbox";
 import Drawer from "@mui/material/Drawer";
 import api from "../api";
 import toast from "react-hot-toast";
-import classNames from "classnames";
 import Datepicker from "react-tailwindcss-datepicker";
+import CreatableSelect from 'react-select/creatable';
 
 export function TableHeader({
   startDueDateFilter,
@@ -30,8 +26,14 @@ export function TableHeader({
   setIsPaidFilter,
   fetchData,
   toggleModal,
+  setSupplierFilter,
+  supplierFilter,
+  setCategoryFilter,
+  categoryFilter,
 }) {
   const [drawer, setDrawer] = useState(false);
+  const [suppliers, setSuppliers] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   function toggleDrawer() {
     setDrawer(!drawer);
@@ -39,6 +41,18 @@ export function TableHeader({
 
   function handleNewTransactionClick() {
     toggleModal();
+  }
+
+  async function fetchSuppliers() {
+    const { data } = await api.get("/supplier?per_page=100");
+
+    setSuppliers(data.data);
+  }
+
+  async function fetchCategories() {
+    const { data } = await api.get("/category?per_page=100");
+
+    setCategories(data.data);
   }
 
   async function paySelectedBills() {
@@ -62,6 +76,11 @@ export function TableHeader({
 
     toggleDrawer();
   }
+
+  useEffect(() => {
+    fetchSuppliers();
+    fetchCategories();
+  }, []);
 
   return (
     <div className="w-full md:relative absolute bottom-0 left-0">
@@ -103,10 +122,10 @@ export function TableHeader({
               shortcuts: {
                 today: "Hoje",
                 yesterday: "Ontem",
-                past: period => `Últimos ${period} dias`,
+                past: (period) => `Últimos ${period} dias`,
                 currentMonth: "Este mês",
-                pastMonth: "Mês passado"
-              }
+                pastMonth: "Mês passado",
+              },
             }}
             separator={"até"}
             displayFormat="DD/MM/YYYY"
@@ -114,8 +133,8 @@ export function TableHeader({
             showShortcuts
             i18n={"pt-br"}
             onChange={(newValue) => {
-              const startDate = new Date(newValue.startDate + 'T00:00:00');
-              const endDate = new Date(newValue.endDate + 'T23:59:59');
+              const startDate = new Date(newValue.startDate + "T00:00:00");
+              const endDate = new Date(newValue.endDate + "T23:59:59");
 
               setStartDueDateFilter(startDate);
               setEndDueDateFilter(endDate);
@@ -136,6 +155,34 @@ export function TableHeader({
             <MenuItem value="due_at">Vencimento</MenuItem>
           </Select>
         </FormControl>
+        <CreatableSelect
+          options={suppliers}
+          onChange={setSupplierFilter}
+          value={supplierFilter}
+          className="w-72"
+          styles={{
+            option: baseStyles => ({
+              ...baseStyles,
+              color: '#000'
+            })
+          }}
+          classNamePrefix="select"
+          placeholder="Fornecedor"
+        />
+        <CreatableSelect
+          options={categories}
+          onChange={setCategoryFilter}
+          value={categoryFilter}
+          className="w-72"
+          styles={{
+            option: baseStyles => ({
+              ...baseStyles,
+              color: '#000'
+            })
+          }}
+          classNamePrefix="select"
+          placeholder="Categoria"
+        />
         <FormControlLabel
           control={<Checkbox checked={isPaidFilter} />}
           label="Pago"

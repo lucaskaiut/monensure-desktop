@@ -28,19 +28,17 @@ export function Bills () {
     const [sortOrder, setSortOrder] = useState('');
     const [isPaidFilter, setIsPaidFilter] = useState(false);
     const [totalBills, setTotalBills] = useState(0);
+    const [supplierFilter, setSupplierFilter] = useState(null);
+    const [categoryFilter, setCategoryFilter] = useState(null);
 
     async function fetchData() {
         const data = await loadData();
 
         setBills(data.data);
 
-        setTotalBills(data.pagination.total);
-
         setTotalReceive(data.additional.totalReceive);
 
         setTotalPay(data.additional.totalPay);
-
-        setTotalBills(data.data.length);
 
         setHasMore(data.pagination.total > 15);
 
@@ -52,8 +50,6 @@ export function Bills () {
 
         setBills([...bills, ...data.data]);
 
-        setTotalBills(data.pagination.total);
-
         setTotalReceive(data.additional.totalReceive);
 
         setTotalPay(data.additional.totalPay);
@@ -63,8 +59,6 @@ export function Bills () {
         if (data.pagination.last_page === data.pagination.current_page) {
             setHasMore(false);
         } 
-
-        setTotalBills(bills.length);
     }
 
     async function loadData(page = 1) { 
@@ -80,6 +74,14 @@ export function Bills () {
 
         if (endDueDateFilter != null) {
             params += `&filter[due_before]=${format(endDueDateFilter, 'yyyy-MM-dd')}`;
+        }
+
+        if (supplierFilter) {
+            params += `&filter[supplier_id]=${supplierFilter.id}`;
+        }
+
+        if (categoryFilter) {
+            params += `&filter[category_id]=${categoryFilter.id}`;
         }
 
         if (sortOrder) {
@@ -205,6 +207,20 @@ export function Bills () {
         setData();
     }, []);
 
+    useEffect(() => {
+        async function setData() {
+            const data = await loadData();
+
+            setBills(data.data);
+
+            setTotalReceive(data.additional.totalReceive);
+
+            setTotalPay(data.additional.totalPay);
+        }
+
+        setData();
+    }, [supplierFilter, startDueDateFilter, endDueDateFilter, sortOrder])
+
     return (
         <div className="flex flex-col w-full px-2 2xl:px-52 xl:px-32 md:mt-10 mt-1">
             <div className="flex gap-2 justify-between items-center">
@@ -227,6 +243,10 @@ export function Bills () {
                         selectedBills={selectedBills}
                         toggleModal={() => toggleModal()}
                         setSelectedBills={setSelectedBills}
+                        setSupplierFilter={setSupplierFilter}
+                        supplierFilter={supplierFilter}
+                        setCategoryFilter={setCategoryFilter}
+                        categoryFilter={categoryFilter}
                     />
                 </div>
                 <div id="scrollableBills" className="w-full sm:mt-8 m-1 flex flex-col min-h-[550px] max-h-[550px] overflow-y-auto">
