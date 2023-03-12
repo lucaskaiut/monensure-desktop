@@ -25,21 +25,32 @@ export function Bills () {
     const [endDueDateFilter, setEndDueDateFilter] = useState(null);
     const [sortOrder, setSortOrder] = useState(null);
     const [isPaidFilter, setIsPaidFilter] = useState(false);
+    const [totalBills, setTotalBills] = useState(0);
 
     async function fetchData() {
         const data = await loadData();
 
         setBills(data.data);
 
+        setTotalBills(data.pagination.total);
+
         setTotalReceive(data.additional.totalReceive);
 
         setTotalPay(data.additional.totalPay);
+
+        setTotalBills(data.data.length);
+
+        setHasMore(data.pagination.total > 15);
+
+        setCurrentPage(1);
     }
 
     async function fetchMoreData () {
         const data = await loadData(currentPage + 1);
 
         setBills([...bills, ...data.data]);
+
+        setTotalBills(data.pagination.total);
 
         setTotalReceive(data.additional.totalReceive);
 
@@ -50,6 +61,8 @@ export function Bills () {
         if (data.pagination.last_page === data.pagination.current_page) {
             setHasMore(false);
         } 
+
+        setTotalBills(bills.length);
     }
 
     async function loadData(page = 1) { 
@@ -224,11 +237,11 @@ export function Bills () {
                 </div>
                 <div id="scrollableBills" className="w-full sm:mt-8 m-1 flex flex-col min-h-[550px] max-h-[550px] overflow-y-auto">
                     <InfiniteScroll
-                        dataLength={bills.length} //This is important field to render the next data
+                        dataLength={currentPage * 15} //This is important field to render the next data
                         next={fetchMoreData}
                         hasMore={hasMore}
                         scrollableTarget="scrollableBills"
-                        scrollThreshold={1}
+                        scrollThreshold={0.9}
                     >
                         { bills.map(bill => {
                             return <TableRow 
