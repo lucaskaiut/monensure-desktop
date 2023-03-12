@@ -245,6 +245,7 @@ export function Bills () {
                                 isPaid={bill.is_paid} 
                                 supplier={bill.supplier.name} 
                                 dueAt={bill.due_at} 
+                                referenceAt={bill.reference_at}
                                 description={bill.description} 
                                 category={bill.category}
                                 amount={bill.amount}

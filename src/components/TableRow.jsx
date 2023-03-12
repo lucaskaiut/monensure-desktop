@@ -12,6 +12,7 @@ export function TableRow({
   supplier,
   category,
   dueAt,
+  referenceAt,
   amount,
   onSelect,
   isSelected,
@@ -54,8 +55,9 @@ export function TableRow({
               <div className="sm:hidden">
                 <p className="text-sm">{description}</p>
               </div>
+              <p className="text-sm text-zinc-400 block sm:hidden">{supplier}</p>
               <p className="md:text-base text-xs text-zinc-400 sm:text-zinc-900">
-                {format(new Date(`${dueAt}T00:00:00`), "dd/MM/yyyy", {
+                {format(new Date(`${referenceAt}T00:00:00`), "dd/MM/yyyy", {
                   locale: ptBR,
                 })}
               </p>
@@ -90,6 +92,11 @@ export function TableRow({
           </p>
           <p className="md:text-sm text-xs text-zinc-400 sm:hidden block">
             {category.name}
+          </p>
+          <p className="md:text-base text-xs text-zinc-400 xs:hidden">
+            {format(new Date(`${dueAt}T00:00:00`), "dd/MM/yyyy", {
+              locale: ptBR,
+            })}
           </p>
         </div>
       </div>
