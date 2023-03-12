@@ -4,7 +4,7 @@ import { Animated } from "react-animated-css";
 import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -15,6 +15,7 @@ import Drawer from "@mui/material/Drawer";
 import api from "../api";
 import toast from "react-hot-toast";
 import classNames from "classnames";
+import Datepicker from "react-tailwindcss-datepicker";
 
 export function TableHeader({
   startDueDateFilter,
@@ -72,7 +73,7 @@ export function TableHeader({
           <p className="xl:block hidden">Nova transação</p>
           <Plus size={24} className="xl:hidden block" />
         </button>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             label="Vencimento de"
             value={startDueDateFilter}
@@ -91,7 +92,36 @@ export function TableHeader({
             }}
             renderInput={(params) => <TextField {...params} />}
           />
-        </LocalizationProvider>
+        </LocalizationProvider> */}
+        <div className="w-80 border rounded-md flex items-center justify-center border-zinc-400">
+          <Datepicker
+            value={{
+              startDate: startDueDateFilter,
+              endDate: endDueDateFilter,
+            }}
+            configs={{
+              shortcuts: {
+                today: "Hoje",
+                yesterday: "Ontem",
+                past: period => `Últimos ${period} dias`,
+                currentMonth: "Este mês",
+                pastMonth: "Mês passado"
+              }
+            }}
+            separator={"até"}
+            displayFormat="DD/MM/YYYY"
+            inputClassName="text-lg border-none outline-none"
+            showShortcuts
+            i18n={"pt-br"}
+            onChange={(newValue) => {
+              const startDate = new Date(newValue.startDate + 'T00:00:00');
+              const endDate = new Date(newValue.endDate + 'T23:59:59');
+
+              setStartDueDateFilter(startDate);
+              setEndDueDateFilter(endDate);
+            }}
+          />
+        </div>
         <FormControl size="medium" className="w-72 hidden xs:block">
           <InputLabel id="demo-simple-select-label">Ordenar</InputLabel>
           <Select
@@ -151,7 +181,7 @@ export function TableHeader({
         </button>
         <Drawer anchor="bottom" open={drawer} onClose={() => toggleDrawer()}>
           <div className="mb-10 flex flex-col gap-2 p-2">
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
+            {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Vencimento de"
                 value={startDueDateFilter}
@@ -170,7 +200,7 @@ export function TableHeader({
                 }}
                 renderInput={(params) => <TextField {...params} />}
               />
-            </LocalizationProvider>
+            </LocalizationProvider> */}
             <div className="w-full">
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Ordenar</InputLabel>
