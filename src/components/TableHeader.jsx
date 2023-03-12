@@ -14,6 +14,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Drawer from "@mui/material/Drawer";
 import api from "../api";
 import toast from "react-hot-toast";
+import classNames from "classnames";
 
 export function TableHeader({
   startDueDateFilter,
@@ -41,15 +42,15 @@ export function TableHeader({
 
   async function paySelectedBills() {
     try {
-      await api.put('/bill/pay-bills', {
-        bills: selectedBills
+      await api.put("/bill/pay-bills", {
+        bills: selectedBills,
       });
 
       setSelectedBills([]);
 
       fetchData();
 
-      toast.success('Contas pagas com sucesso');
+      toast.success("Contas pagas com sucesso");
     } catch ({ response }) {
       toast.error(response.data.message);
     }
@@ -91,6 +92,20 @@ export function TableHeader({
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
+        <FormControl size="medium" className="w-72 hidden xs:block">
+          <InputLabel id="demo-simple-select-label">Ordenar</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={sortOrder}
+            label="Ordenar"
+            onChange={(event) => setSortOrder(event.target.value)}
+          >
+            <MenuItem value="">Selecione</MenuItem>
+            <MenuItem value="supplier">Fornecedor</MenuItem>
+            <MenuItem value="due_at">Vencimento</MenuItem>
+          </Select>
+        </FormControl>
         <FormControlLabel
           control={<Checkbox checked={isPaidFilter} />}
           label="Pago"
